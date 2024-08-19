@@ -47,6 +47,7 @@ dependencies:
   community_material_icon: ^5.9.55
   pinput: ^5.0.0
   speech_to_text: ^6.6.2
+  font_awesome_flutter: ^10.7.0
 
 dev_dependencies:
   flutter_test:
@@ -85,7 +86,7 @@ flutter:
     - assets/images/appbar2.png
     - assets/images/profile.png
     # - assets/images/logo3.png
-    - assets/images/farmer.jpg
+    - assets/images/farmer.png
     - assets/images/facebook.png
     - assets/images/instagram.png
     - assets/images/profile.png
@@ -93,7 +94,10 @@ flutter:
     - assets/images/watchnow.png
     - assets/images/whatsapp.png
     - assets/images/youtube.png
-    - assets/images/buyer.jpg
+    - assets/images/buyer.png
+    - assets/images/instructor.png
+    - assets/images/linkedin.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

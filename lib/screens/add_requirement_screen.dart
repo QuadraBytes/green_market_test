@@ -394,6 +394,9 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                             backgroundColor: kColor,
                           ),
                         ),
+                        SizedBox(
+                          height: size.height * 0.02,
+                        ),
                       ],
                     ),
                   ],
@@ -404,16 +407,16 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                 top: -50, child: Image.asset('assets/images/appbar2.png')),
             Positioned(
               top: 25,
-              left: size.width * 0.2,
+              left: size.width * 0.22,
               right: size.width * 0.2,
               child: Text('Add Requiremenets',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: size.height * 0.03,
                       fontWeight: FontWeight.w500,
                       color: Colors.white)),
             ),
             Positioned(
-                top: 20,
+                top: 15,
                 left: 10,
                 child: IconButton(
                   icon: Icon(

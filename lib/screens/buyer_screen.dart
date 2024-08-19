@@ -521,7 +521,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
             },
             child: Icon(
               Icons.add,
-              size: 35,
+              size: 30,
               color: Colors.white,
             ),
             backgroundColor: kColor,
@@ -556,7 +556,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                   icon: Icon(
                                     Icons.list,
                                     color: Colors.black,
-                                    size: 35,
+                                    size: 30,
                                   ),
                                   onPressed: () {
                                     Scaffold.of(context).openDrawer();
@@ -565,7 +565,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                               },
                             )
                           : Container(),
-                      !showSearchBar ? SizedBox(width: 10) : Container(),
+                      // !showSearchBar ? SizedBox(width: 10) : Container(),
                       Expanded(
                         child: !showSearchBar
                             ? Align(
@@ -580,7 +580,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                   icon: Icon(
                                     Icons.search,
                                     color: Colors.black,
-                                    size: 27.5,
+                                    size: 25,
                                   ),
                                 ),
                               )
@@ -622,7 +622,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                           ? IconButton(
                               icon: Icon(
                                 Icons.filter_alt_outlined,
-                                size: 30,
+                                size: 25,
                               ),
                               onPressed: () {
                                 _showFilterSheet(context);
@@ -641,7 +641,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                               icon: Icon(
                                 Icons.favorite,
                                 color: Colors.black,
-                                size: 30,
+                                size: 25,
                               ),
                             )
                           : Container(),
@@ -657,7 +657,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                               icon: Icon(
                                 Icons.person,
                                 color: Colors.black,
-                                size: 30,
+                                size: 25,
                               ),
                             )
                           : Container(),
@@ -726,7 +726,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                       child: Text(
                         'No Requirements Available',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                         ),
                       ),
                     )
@@ -753,7 +753,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                   ),
                                   color: kColor2,
                                   child: Container(
-                                    height: size.height * 0.15,
+                                    height: size.height * 0.17,
                                     padding: EdgeInsets.all(15.0),
                                     child: Column(
                                       children: [

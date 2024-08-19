@@ -19,6 +19,7 @@ class AvailabilityCard extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
+      margin: EdgeInsets.only(bottom: 10.0),
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
@@ -26,7 +27,7 @@ class AvailabilityCard extends StatelessWidget {
         ),
         color: kColor2,
         child: Container(
-          height: size.height * 0.105,
+          height: size.height * 0.115,
           padding: EdgeInsets.all(15.0),
           child: Column(
             children: [

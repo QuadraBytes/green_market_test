@@ -44,6 +44,10 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
 
   Future<void> getUserFavourites() async {
     try {
+      setState(() {
+        showLoading = true;
+      });
+
       var userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(loggedInUser!.email)
@@ -54,25 +58,18 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
         List<String> requireFavouritesIdList =
             List<String>.from(userDoc['requireFavourites'] ?? []);
 
-        if (requireFavouritesIdList.isEmpty) {
-          setState(() {
-            showLoading = false;
-          });
-          return;
-        } else {
-          for (var id in requireFavouritesIdList) {
-            var data = await FirebaseFirestore.instance
-                .collection('requirements')
-                .doc(id)
-                .get();
+        for (var id in requireFavouritesIdList) {
+          var data = await FirebaseFirestore.instance
+              .collection('requirements')
+              .doc(id)
+              .get();
 
-            requireFavouritesList.add(data);
-          }
-          setState(() {
-            requireFavourites = requireFavouritesList;
-            showLoading = false;
-          });
+          requireFavouritesList.add(data);
         }
+        setState(() {
+          requireFavourites = requireFavouritesList;
+          showLoading = false;
+        });
       }
     } catch (e) {
       print(e);
@@ -87,6 +84,8 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
           .update({
         'requireFavourites': FieldValue.arrayRemove([requireId]),
       });
+
+      await getUserFavourites();
 
       setState(() {
         requireFavourites.remove(requireId);
@@ -117,7 +116,7 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
             Positioned(
                 top: -50, child: Image.asset('assets/images/appbar2.png')),
             Positioned(
-              top: 20,
+              top: 15,
               left: 10,
               child: IconButton(
                 icon: Icon(
@@ -134,11 +133,11 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
             ),
             Positioned(
               top: 25,
-              left: size.width * 0.35,
+              left: size.width * 0.37,
               right: size.width * 0.3,
-              child: Text('Favourites',
+              child: Text('Favorites',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: size.height * 0.03,
                       fontWeight: FontWeight.w500,
                       color: Colors.white)),
             ),
@@ -158,7 +157,7 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
                           child: Text(
                             'No Favourites Available',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 15,
                             ),
                           ),
                         )
@@ -181,7 +180,7 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
                                     ),
                                     color: kColor2,
                                     child: Container(
-                                      height: size.height * 0.15,
+                                      height: size.height * 0.17,
                                       padding: EdgeInsets.all(15.0),
                                       child: Column(
                                         children: [

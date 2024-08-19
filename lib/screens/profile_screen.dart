@@ -416,7 +416,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
                       Row(
                         children: [
@@ -497,7 +497,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           )
                         ],
-                      )
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -646,7 +649,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 20,
                       ),
                       Row(
                         children: [
@@ -718,9 +721,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 backgroundColor: Colors.red,
                               ),
                             ),
-                          )
+                          ),
                         ],
-                      )
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -780,7 +786,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Positioned(
                 top: -50, child: Image.asset('assets/images/appbar2.png')),
             Positioned(
-                top: 20,
+                top: 15,
                 left: 10,
                 child: IconButton(
                   icon: Icon(
@@ -800,7 +806,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               right: size.width * 0.4,
               child: Text('Profile',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: size.height * 0.03,
                       fontWeight: FontWeight.w500,
                       color: Colors.white)),
             ),

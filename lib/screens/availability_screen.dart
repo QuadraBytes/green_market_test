@@ -21,14 +21,14 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
         body: Stack(
           children: [
             Positioned(
-                top: -40, child: Image.asset('assets/images/appbar2.png')),
+                top: -50, child: Image.asset('assets/images/appbar2.png')),
             Positioned(
               top: 15,
               left: 10,
               child: Builder(
                 builder: (context) {
                   return IconButton(
-                    icon: Icon(Icons.list, color: Colors.white, size: 35),
+                    icon: Icon(Icons.list, color: Colors.white, size: 30),
                     onPressed: () {
                       Scaffold.of(context).openDrawer();
                     },
@@ -38,12 +38,12 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
             ),
             Positioned(
               top: 25,
-              left: size.width * 0.35,
+              left: size.width * 0.37,
               right: size.width * 0.3,
               child: Text(
                 'Availability',
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: size.height * 0.03,
                     fontWeight: FontWeight.w500,
                     color: Colors.white),
               ),
@@ -66,7 +66,16 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                   for (var doc in snapshot.data!.docs) {
                     String cropName = doc['cropType'];
                     String district = doc['district'];
-                    double weight = double.parse(doc['weight']);
+                    double weight = 0;
+                    if (doc['weight'] == '< 30') {
+                      weight = 20;
+                    } else if (doc['weight'] == '30-60') {
+                      weight = 45;
+                    } else if (doc['weight'] == '60-90') {
+                      weight = 75;
+                    } else if (doc['weight'] == '> 90') {
+                      weight = 100;
+                    }
 
                     if (!cropData.containsKey(cropName)) {
                       cropData[cropName] = {
