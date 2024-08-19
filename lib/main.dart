@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/screens/signin_screen.dart';
+import 'package:green_market_test/screens/social_media_screen.dart';
 
 void main() async {
   EmailOTP.config(
@@ -37,7 +38,7 @@ class GreenMarket extends StatelessWidget {
       //   colorScheme: ColorScheme.fromSeed(seedColor: kColor),
       //   useMaterial3: true,
       // ),
-      home: Signin(),
+      home: SocialMedia(),
     );
   }
 }
