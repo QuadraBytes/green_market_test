@@ -1440,9 +1440,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                               SizedBox(
                                                                 width: 10,
                                                               ),
-                                                              isFavouriteCrop
-                                                                  ? Container()
-                                                                  : ClipRRect(
+                                                               ClipRRect(
                                                                       borderRadius:
                                                                           BorderRadius.circular(
                                                                               10),
@@ -1463,8 +1461,9 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                                             size:
                                                                                 17,
                                                                             Icons.favorite,
-                                                                            color:
-                                                                                Colors.white,
+                                                                            color: isFavouriteCrop ? 
+                                                                              Colors.black
+                                                                               : Colors.white,
                                                                           ),
                                                                         ),
                                                                       ),

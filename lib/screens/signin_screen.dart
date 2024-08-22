@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:green_market_test/components/constants.dart';
 import 'package:green_market_test/screens/create_profile_screen.dart';
 import 'package:green_market_test/screens/login_screen.dart';
+import 'package:green_market_test/screens/verify_email_screen.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -55,24 +56,15 @@ class _SigninState extends State<Signin> {
         return;
       }
 
-      setState(() {
-        showLoading = true;
-      });
-
-      await _auth.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
+      Navigator.push(context,
+        MaterialPageRoute(
+          builder: (context) => VerifyEmailScreen(
+            email: emailController.text,
+            password: passwordController.text,
+          ),
+        ),
       );
-      _auth
-          .signInWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text)
-          .then((signedUser) => {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateProfileScreen(),
-                    ))
-              });
+     
     } on Exception catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

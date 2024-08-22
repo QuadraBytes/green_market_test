@@ -18,7 +18,6 @@ class AddCropScreen extends StatefulWidget {
 }
 
 class _AddCropScreenState extends State<AddCropScreen> {
-  // Existing variables
   final _formKey = GlobalKey<FormState>();
   String? _farmerName;
   String? _district;
@@ -228,6 +227,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                               borderSide: BorderSide(color: Colors.black)),
                           labelText: 'Address',
                           hintText: 'Eg: No, Street, City',
+                          
                           hintStyle: TextStyle(
                               color: const Color.fromRGBO(158, 158, 158, 1),
                               fontWeight: FontWeight.normal),

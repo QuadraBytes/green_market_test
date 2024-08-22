@@ -43,8 +43,16 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
       if (userDoc.exists) {
         List cropFavouritesList = [];
 
+        if(userDoc['cropFavourites'] == null) {
+          setState(() {
+            showLoading = false;
+            cropFavourites = [];
+          });
+          return;
+        }
+
         List<String> cropFavouritesIdList =
-            List<String>.from(userDoc['cropFavourites'] ?? []);
+            List<String>.from(userDoc['cropFavourites']);
 
         if (cropFavouritesIdList.isEmpty) {
           setState(() {
