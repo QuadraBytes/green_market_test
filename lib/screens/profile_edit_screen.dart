@@ -91,32 +91,32 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         'phoneNumber': phoneNumberController.text,
         'district': districtController.text,
       });
-
-      var cropDocs = await FirebaseFirestore.instance
+      
+    var cropDocs = await FirebaseFirestore.instance
+        .collection('crops')
+        .where('userId', isEqualTo: loggedInUser?.email)
+        .get();
+    for (var element in cropDocs.docs) {
+      await FirebaseFirestore.instance
           .collection('crops')
-          .where('userId', isEqualTo: loggedInUser?.email)
-          .get();
-      for (var element in cropDocs.docs) {
-        await FirebaseFirestore.instance
-            .collection('crops')
-            .doc(element.id)
-            .update({
-          'farmerName': displayNameController.text,
-        });
-      }
+          .doc(element.id)
+          .update({
+        'farmerName': displayNameController.text,
+      });
+    }
 
-      var requirementDocs = await FirebaseFirestore.instance
+    var requirementDocs = await FirebaseFirestore.instance
+        .collection('requirements')
+        .where('userId', isEqualTo: loggedInUser?.email)
+        .get();
+    for (var element in requirementDocs.docs) {
+      await FirebaseFirestore.instance
           .collection('requirements')
-          .where('userId', isEqualTo: loggedInUser?.email)
-          .get();
-      for (var element in requirementDocs.docs) {
-        await FirebaseFirestore.instance
-            .collection('requirements')
-            .doc(element.id)
-            .update({
-          'buyerName': displayNameController.text,
-        });
-      }
+          .doc(element.id)
+          .update({
+        'buyerName': displayNameController.text,
+      });
+    }
 
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => BottomBarScreen()));

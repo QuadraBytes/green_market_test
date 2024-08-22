@@ -302,7 +302,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(20)),
                     image: DecorationImage(
-                      image: AssetImage("assets/images/crop.jpg"),
+                      image: NetworkImage(data['images']),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -938,7 +938,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
             },
             child: Icon(
               Icons.add,
-              size: 35,
+              size: 30,
               color: Colors.white,
             ),
             backgroundColor: kColor,
@@ -970,7 +970,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                 icon: Icon(
                                   Icons.list,
                                   color: Colors.black,
-                                  size: 35,
+                                  size: 30,
                                 ),
                                 onPressed: () {
                                   Scaffold.of(context).openDrawer();
@@ -994,7 +994,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                 icon: Icon(
                                   Icons.search,
                                   color: Colors.black,
-                                  size: 27.5,
+                                  size: 25,
                                 ),
                               ),
                             )
@@ -1071,7 +1071,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                             focusNode: searchFocusNode,
                             icon: Icon(
                               Icons.filter_alt_outlined,
-                              size: 30,
+                              size: 25,
                             ),
                             onPressed: () {
                               _showFilterSheet(context);
@@ -1090,7 +1090,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                             icon: Icon(
                               Icons.favorite,
                               color: Colors.black,
-                              size: 30,
+                              size: 25,
                             ),
                           )
                         : Container(),
@@ -1106,7 +1106,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                             icon: Icon(
                               Icons.person,
                               color: Colors.black,
-                              size: 30,
+                              size: 25,
                             ),
                           )
                         : Container(),
@@ -1184,7 +1184,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                       child: Text(
                         'No Crops Available',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                         ),
                       ),
                     )
@@ -1215,7 +1215,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                   ),
                                   color: kColor2,
                                   child: Container(
-                                    height: size.height * 0.20,
+                                    height: size.height * 0.22,
                                     padding: EdgeInsets.all(15.0),
                                     child: Column(
                                       children: [
@@ -1234,8 +1234,8 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                     width: size.width * 0.3,
                                                     height: size.height * 0.125,
                                                     fit: BoxFit.cover,
-                                                    image:
-                                                        AssetImage(images[0]),
+                                                    image: NetworkImage(
+                                                        data['images']),
                                                   ),
                                                 ),
                                                 SizedBox(

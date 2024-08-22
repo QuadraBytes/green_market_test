@@ -31,7 +31,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
   DateTime? _availableDate;
   DateTime? _expiringDate;
   String? _price;
-  List<File> _images = [];
+  File? _image;
   final _auth = FirebaseAuth.instance;
 
   final ImagePicker _picker = ImagePicker();
@@ -79,14 +79,16 @@ class _AddCropScreenState extends State<AddCropScreen> {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _images.add(File(pickedFile.path));
+        // _images.add(File(pickedFile.path));
+        _image = File(pickedFile.path);
       });
     }
   }
 
   void _removeImage(int index) {
     setState(() {
-      _images.removeAt(index);
+      // _images.removeAt(index);
+      _image = null;
     });
   }
 
@@ -122,6 +124,11 @@ class _AddCropScreenState extends State<AddCropScreen> {
         //   imagesUrls.add(downloadUrl);
         // }
 
+        var imageName = DateTime.now().millisecondsSinceEpoch.toString();
+        var storageRef = FirebaseStorage.instance.ref().child('$imageName.jpg');
+        var uploadTask = storageRef.putFile(_image!);
+        var downloadUrl = await (await uploadTask).ref.getDownloadURL();
+
         await cropsCollection.add({
           'userId': loggedInUser?.uid,
           'farmerName': _farmerName,
@@ -138,7 +145,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
           'isAccepted': false,
           'isDeleted': false,
           'isExpired': false,
-          // 'images': imagesUrls,
+          'images': downloadUrl,
         });
 
         Navigator.pushReplacement(context,
@@ -484,7 +491,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                     ),
                     SizedBox(height: size.height * 0.02),
                     GestureDetector(
-                      onTap: _images.length == 2 ? null : _pickImage,
+                      onTap: _image != null ? null : _pickImage,
                       child: AbsorbPointer(
                         child: TextFormField(
                           decoration: InputDecoration(
@@ -494,13 +501,11 @@ class _AddCropScreenState extends State<AddCropScreen> {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black)),
-                              labelText: _images.length == 0
-                                  ? 'Upload Images (2)'
-                                  : _images.length == 1
-                                      ? 'One Image is Uploaded'
-                                      : 'Two Images are Uploaded',
+                              labelText: _image == null
+                                  ? 'Tap to Upload Image'
+                                  : 'Image is Uploaded',
                               suffixIcon: Icon(
-                                Icons.add_a_photo,
+                                Icons.filter,
                                 size: size.height * 0.025,
                                 color: kColor4,
                               )),
@@ -518,21 +523,27 @@ class _AddCropScreenState extends State<AddCropScreen> {
                     Wrap(
                       alignment: WrapAlignment.center,
                       spacing: 10,
-                      children: _images.asMap().entries.map((entry) {
-                        int index = entry.key;
-                        File imageFile = entry.value;
-                        return Stack(
-                          alignment: Alignment.topRight,
-                          children: [
-                            Image.file(imageFile,
-                                width: 150, height: 150, fit: BoxFit.contain),
-                            IconButton(
-                              icon: Icon(Icons.cancel, color: kColor),
-                              onPressed: () => _removeImage(index),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                      children: _image == null
+                          ? []
+                          : [
+                              _image!,
+                            ].asMap().entries.map((entry) {
+                              int index = entry.key;
+                              File imageFile = entry.value;
+                              return Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Image.file(imageFile,
+                                      width: size.width * 0.5,
+                                      height: size.width * 0.5,
+                                      fit: BoxFit.contain),
+                                  IconButton(
+                                    icon: Icon(Icons.cancel, color: kColor),
+                                    onPressed: () => _removeImage(index),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
                     ),
                     SizedBox(height: size.height * 0.03),
                     Column(
@@ -562,6 +573,9 @@ class _AddCropScreenState extends State<AddCropScreen> {
                             backgroundColor: kColor,
                           ),
                         ),
+                        SizedBox(
+                          height: 40,
+                        )
                       ],
                     ),
                   ],
@@ -576,12 +590,12 @@ class _AddCropScreenState extends State<AddCropScreen> {
               right: size.width * 0.3,
               child: Text('Add Crop',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: size.height * 0.03,
                       fontWeight: FontWeight.w500,
                       color: Colors.white)),
             ),
             Positioned(
-                top: 20,
+                top: 15,
                 left: 10,
                 child: IconButton(
                   icon: Icon(

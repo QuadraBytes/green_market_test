@@ -100,125 +100,163 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/logo.png",
-                width: MediaQuery.of(context).size.height * 0.25,
-                height: MediaQuery.of(context).size.height * 0.25,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              const Text(
-                "CREATE PROFILE",
-                style: TextStyle(
-                    fontSize: 20,
-                    letterSpacing: 2,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.85,
-                child: Form(
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: displayNameController,
-                        decoration: InputDecoration(
-                          labelText: "Display Name",
-                          hintText: "Enter your dispaly name",
-                          prefixIcon: Icon(Icons.person),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        controller: aboutController,
-                        decoration: InputDecoration(
-                          labelText: "About",
-                          hintText: "Enter your about",
-                          prefixIcon: Icon(Icons.edit_calendar_sharp),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        menuMaxHeight: 250,
-                        decoration: InputDecoration(
-                          labelText: "District",
-                          hintText: "Select your district",
-                          prefixIcon: Icon(Icons.location_on),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        icon: Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            size: 25,
-                          ),
-                        ),
-                        items: districts.map((String type) {
-                          return DropdownMenuItem<String>(
-                            value: type,
-                            child: Text(type, style: TextStyle(fontSize: 16)),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            districtController.text = value!;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextField(
-                        enableSuggestions: false,
-                        controller: phoneNumberController,
-                        maxLength: 9,
-                        decoration: InputDecoration(
-                          labelText: "Phone Number",
-                          hintText: "+94 7X XXX XXXX",
-                          prefixIcon: Icon(Icons.phone),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      showLoading
-                          ? CircularProgressIndicator(
-                              color: kColor,
-                            )
-                          : ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: kColor,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 50, vertical: 10),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              onPressed: createProfile,
-                              child: Text("Create Profile",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/images/logo.png",
+                  width: MediaQuery.of(context).size.height * 0.25,
+                  height: MediaQuery.of(context).size.height * 0.25,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                const Text(
+                  "CREATE PROFILE",
+                  style: TextStyle(
+                      fontSize: 20,
+                      letterSpacing: 2,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  child: Form(
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: displayNameController,
+                          decoration: InputDecoration(
+                            labelText: "Display Name",
+                            hintText: "Enter your dispaly name",
+                             hintStyle: TextStyle(
+                              color: kColor4,
                             ),
-                    ],
+                            labelStyle: TextStyle(
+                              color: kColor4,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: kColor4)),
+                            prefixIcon: Icon(Icons.person),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          controller: aboutController,
+                          decoration: InputDecoration(
+                            labelText: "About",
+                            hintText: "Enter your about",
+                             hintStyle: TextStyle(
+                              color: kColor4,
+                            ),
+                            labelStyle: TextStyle(
+                              color: kColor4,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: kColor4)),
+                            prefixIcon: Icon(Icons.edit_calendar_sharp),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        DropdownButtonFormField<String>(
+                          menuMaxHeight: 250,
+                          decoration: InputDecoration(
+                            labelText: "District",
+                            hintText: "Select your district",
+                             hintStyle: TextStyle(
+                              color: kColor4,
+                            ),
+                            labelStyle: TextStyle(
+                              color: kColor4,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: kColor4)),
+                            prefixIcon: Icon(Icons.location_on),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          icon: Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              size: 25,
+                            ),
+                          ),
+                          items: districts.map((String type) {
+                            return DropdownMenuItem<String>(
+                              value: type,
+                              child: Text(type, style: TextStyle(fontSize: 16)),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              districtController.text = value!;
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          enableSuggestions: false,
+                          controller: phoneNumberController,
+                          maxLength: 9,
+                          decoration: InputDecoration(
+                            labelText: "Phone Number",
+                            hintText: "+94 7X XXX XXXX",
+                             hintStyle: TextStyle(
+                              color: kColor4,
+                            ),
+                            labelStyle: TextStyle(
+                              color: kColor4,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: kColor4)),
+                            prefixIcon: Icon(Icons.phone),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        showLoading
+                            ? CircularProgressIndicator(
+                                color: kColor,
+                              )
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: kColor,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 50, vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: createProfile,
+                                child: Text("Create Profile",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

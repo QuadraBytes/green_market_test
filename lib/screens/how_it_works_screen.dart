@@ -17,7 +17,7 @@ class HowItWorks extends StatelessWidget {
         body: Stack(
           children: [
             Positioned(
-                top: -40, child: Image.asset('assets/images/appbar2.png')),
+                top: -50, child: Image.asset('assets/images/appbar2.png')),
             Positioned(
               top: 15,
               left: 10,
@@ -27,7 +27,7 @@ class HowItWorks extends StatelessWidget {
                     icon: Icon(
                       Icons.list,
                       color: Colors.white,
-                      size: 35,
+                      size: 30,
                     ),
                     onPressed: () {
                       Scaffold.of(context).openDrawer();
@@ -38,11 +38,11 @@ class HowItWorks extends StatelessWidget {
             ),
             Positioned(
               top: 25,
-              left: size.width * 0.31,
+              left: size.width * 0.33,
               right: size.width * 0.28,
               child: Text('How It Works',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: size.height * 0.0275,
                       fontWeight: FontWeight.w500,
                       color: Colors.white)),
             ),
@@ -55,7 +55,9 @@ class HowItWorks extends StatelessWidget {
 }
 
 class MediaCard extends StatelessWidget {
-  const MediaCard({super.key});
+  const MediaCard({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,167 +66,6 @@ class MediaCard extends StatelessWidget {
         children: [
           Column(
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-              Card(
-                elevation: 100,
-                color: const Color.fromARGB(255, 255, 255, 255),
-                clipBehavior: Clip.hardEdge,
-                child: InkWell(
-                  splashColor: Colors.green.withAlpha(100),
-                  onTap: () {
-                    debugPrint('Card tapped.');
-                  },
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.90,
-                    height: MediaQuery.of(context).size.height * 0.20,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Adjust the radius to your preference
-                                  child: Image.asset(
-                                    "assets/images/farmer.jpg",
-                                    height: MediaQuery.of(context).size.height *
-                                        0.1,
-                                    fit: BoxFit
-                                        .cover, // Ensures the image fits well within the rounded corners
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                "  If you are a farmer",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          //crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.zero,
-                              child: Image.asset(
-                                "assets/images/watchnow.png",
-                                height:
-                                    MediaQuery.of(context).size.height * 0.12,
-                                width: MediaQuery.of(context).size.width * 0.18,
-                                alignment: AlignmentDirectional.bottomCenter,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-
-              Card(
-                elevation: 100,
-                color: const Color.fromARGB(255, 255, 255, 255),
-                clipBehavior: Clip.hardEdge,
-                child: InkWell(
-                  splashColor: Colors.green.withAlpha(100),
-                  onTap: () {
-                    debugPrint('Card tapped.');
-                  },
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.90,
-                    height: MediaQuery.of(context).size.height * 0.20,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Adjust the radius to your preference
-                                  child: Image.asset(
-                                    "assets/images/buyer.jpg",
-                                    height: MediaQuery.of(context).size.height *
-                                        0.1,
-                                    fit: BoxFit
-                                        .cover, // Ensures the image fits well within the rounded corners
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                "  If you are a buyer",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Image.asset(
-                                  "assets/images/watchnow.png",
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.12,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.18,
-                                  alignment: AlignmentDirectional.bottomCenter,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              //
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.01,
               ),
@@ -242,40 +83,21 @@ class MediaCard extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.20,
                     child: Row(
                       children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Adjust the radius to your preference
-                                  child: Image.asset(
-                                    "assets/images/buyer.jpg",
-                                    height: MediaQuery.of(context).size.height *
-                                        0.1,
-                                    fit: BoxFit
-                                        .cover, // Ensures the image fits well within the rounded corners
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Column(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                "  If you are a AI",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                              padding: const EdgeInsets.all(10),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    10.0), // Adjust the radius to your preference
+                                child: Image.asset(
+                                  "assets/images/farmer.png",
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.15,
+                                  fit: BoxFit
+                                      .cover, // Ensures the image fits well within the rounded corners
                                 ),
                               ),
                             ),
@@ -283,19 +105,187 @@ class MediaCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Image.asset(
-                                  "assets/images/watchnow.png",
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.1,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.2,
-                                  alignment: AlignmentDirectional.bottomCenter,
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                              Text(
+                                "If you are a farmer",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/watchnow.png",
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+
+              Card(
+                elevation: 10,
+                color: const Color.fromARGB(255, 255, 255, 255),
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                  splashColor: Colors.green.withAlpha(100),
+                  onTap: () {
+                    debugPrint('Card tapped.');
+                  },
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.90,
+                    height: MediaQuery.of(context).size.height * 0.20,
+                    child: Row(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    10.0), // Adjust the radius to your preference
+                                child: Image.asset(
+                                  "assets/images/buyer.png",
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.15,
+                                  fit: BoxFit
+                                      .cover, // Ensures the image fits well within the rounded corners
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                              Text(
+                                "If you are a buyer",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/watchnow.png",
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              //
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              Card(
+                elevation: 10,
+                color: const Color.fromARGB(255, 255, 255, 255),
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                  splashColor: Colors.green.withAlpha(100),
+                  onTap: () {
+                    debugPrint('Card tapped.');
+                  },
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.90,
+                    height: MediaQuery.of(context).size.height * 0.20,
+                    child: Row(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    10.0), // Adjust the radius to your preference
+                                child: Image.asset(
+                                  "assets/images/instructor.png",
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.15,
+                                  fit: BoxFit
+                                      .cover, // Ensures the image fits well within the rounded corners
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
+                              ),
+                              Text(
+                                "If you are a AI",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/watchnow.png",
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.3,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ],
                               ),
                             ],
                           ),

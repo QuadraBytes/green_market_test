@@ -48,11 +48,14 @@ dependencies:
   pinput: ^5.0.0
   speech_to_text: ^6.6.2
   font_awesome_flutter: ^10.7.0
+<<<<<<< HEAD
   shared_preferences: ^2.2.3
   intl: ^0.19.0
   http: ^1.2.2
 
 
+=======
+>>>>>>> 370e6af968b72ed841808d7c48071b5c7a7dc360
 
 dev_dependencies:
   flutter_test:
@@ -90,8 +93,13 @@ flutter:
     - assets/images/appbar1.png
     - assets/images/appbar2.png
     - assets/images/profile.png
+<<<<<<< HEAD
     - assets/images/linkedin.png
     - assets/images/farmer.jpg
+=======
+    # - assets/images/logo3.png
+    - assets/images/farmer.png
+>>>>>>> 370e6af968b72ed841808d7c48071b5c7a7dc360
     - assets/images/facebook.png
     - assets/images/instagram.png
     - assets/images/profile.png
@@ -99,7 +107,10 @@ flutter:
     - assets/images/watchnow.png
     - assets/images/whatsapp.png
     - assets/images/youtube.png
-    - assets/images/buyer.jpg
+    - assets/images/buyer.png
+    - assets/images/instructor.png
+    - assets/images/linkedin.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

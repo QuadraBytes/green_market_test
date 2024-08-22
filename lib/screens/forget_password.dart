@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_otp/email_otp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/constants.dart';
+import 'package:green_market_test/screens/login_screen.dart';
+import 'package:green_market_test/screens/reset_password_screen.dart';
 import 'package:pinput/pinput.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -102,8 +105,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     }
     bool verify = EmailOTP.verifyOTP(otp: otpController.text);
     if (verify) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const BottomBarScreen()));
+      FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.green,
+          content:
+              Center(child: Text("Password reset email sent to your email"))));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.red,
@@ -125,46 +132,133 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       child: Scaffold(
         body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/logo.png",
-                width: MediaQuery.of(context).size.height * 0.2,
-                height: MediaQuery.of(context).size.height * 0.2,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              const Text(
-                "VERIFY EMAIL",
-                style: TextStyle(
-                    fontSize: 20,
-                    letterSpacing: 3,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  hintText: "Enter your email",
-                  prefixIcon: Icon(Icons.email),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/logo.png",
+                    width: MediaQuery.of(context).size.height * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.2,
                   ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              showOtp
-                  ? const Text('Didn\'t receive the otp code?')
-                  : Container(),
-              showOtp ? const SizedBox(height: 10) : Container(),
-              showSendProgress
-                  ? const CircularProgressIndicator(
-                      color: kColor,
-                    )
-                  : showOtp
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  const Text(
+                    "VERIFY EMAIL",
+                    style: TextStyle(
+                        fontSize: 20,
+                        letterSpacing: 3,
+                        fontStyle: FontStyle.normal,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                  TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      hintText: "Enter your email",
+                      hintStyle: TextStyle(
+                        color: kColor4,
+                      ),
+                      labelStyle: TextStyle(
+                        color: kColor4,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: kColor4)),
+                      prefixIcon: Icon(Icons.email),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  showOtp
+                      ? const Text('Didn\'t receive the otp code?')
+                      : Container(),
+                  showOtp ? const SizedBox(height: 10) : Container(),
+                  showSendProgress
+                      ? const CircularProgressIndicator(
+                          color: kColor,
+                        )
+                      : showOtp
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kColor,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50, vertical: 10),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  showSendProgress = true;
+                                });
+                                sendOtp();
+                              },
+                              child: Text("Resend OTP",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            )
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kColor,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50, vertical: 10),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: sendOtp,
+                              child: Text("Send OTP",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                  const SizedBox(height: 20),
+                  showOtp
+                      ? const Text(
+                          'Verification Code',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w600),
+                        )
+                      : Container(),
+                  showOtp ? const SizedBox(height: 20) : Container(),
+                  showOtp
+                      ? Pinput(
+                          controller: otpController,
+                          length: 6,
+                          defaultPinTheme: PinTheme(
+                            textStyle: const TextStyle(
+                                fontSize: 30, color: Colors.black),
+                            width: 50,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(color: kColor4, width: 2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          focusedPinTheme: PinTheme(
+                            textStyle: const TextStyle(
+                                fontSize: 30, color: Colors.black),
+                            width: 50,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              border: Border.all(
+                                  color: const Color.fromARGB(255, 63, 145, 65),
+                                  width: 2.5),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  showOtp ? const SizedBox(height: 20) : Container(),
+                  showOtp
                       ? ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: kColor,
@@ -175,97 +269,23 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             ),
                           ),
                           onPressed: () {
-                            setState(() {
-                              showSendProgress = true;
-                            });
-                            sendOtp();
+                            verifyOtp();
                           },
-                          child: Text("Resend OTP",
+                          child: Text("Verify Email",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold)),
                         )
-                      : ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: kColor,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: sendOtp,
-                          child: Text("Send OTP",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-              const SizedBox(height: 50),
-              showOtp
-                  ? const Text(
-                      'Verification Code',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                    )
-                  : Container(),
-              showOtp ? const SizedBox(height: 20) : Container(),
-              showOtp
-                  ? Pinput(
-                      controller: otpController,
-                      length: 6,
-                      defaultPinTheme: PinTheme(
-                        textStyle:
-                            const TextStyle(fontSize: 30, color: Colors.black),
-                        width: 50,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(38, 68, 137, 255),
-                          border: Border.all(
-                              color: const Color(0xFF448AFF), width: 2.5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      focusedPinTheme: PinTheme(
-                        textStyle:
-                            const TextStyle(fontSize: 30, color: Colors.black),
-                        width: 50,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(38, 68, 137, 255),
-                          border:
-                              Border.all(color: Colors.blueAccent, width: 2.5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    )
-                  : Container(),
-              showOtp ? const SizedBox(height: 20) : Container(),
-              showOtp
-                  ? ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: kColor,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {
-                        verifyOtp();
-                      },
-                      child: Text("Verify Email",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)),
-                    )
-                  : Container(),
-              showOtp ? const SizedBox(height: 10) : Container(),
-              showOtp
-                  ? Text(
-                      'OTP is expired in $countdown seconds',
-                    )
-                  : Container(),
-            ],
+                      : Container(),
+                  showOtp ? const SizedBox(height: 10) : Container(),
+                  showOtp
+                      ? Text(
+                          'OTP is expired in $countdown seconds',
+                        )
+                      : Container(),
+                ],
+              ),
+            ),
           ),
         ),
       ),

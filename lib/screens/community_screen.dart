@@ -3,21 +3,9 @@ import 'package:green_market_test/components/constants.dart';
 import 'package:green_market_test/components/side_bar.dart';
 import 'package:green_market_test/screens/favourites_screen.dart';
 import 'package:green_market_test/screens/profile_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 
 class CommunityScreen extends StatelessWidget {
   const CommunityScreen({super.key});
-
-  void openWhatsApp() async {
-    const whatsappUrl = "https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW."; 
-    if (await canLaunch(whatsappUrl)) {
-      await launch(whatsappUrl);
-    } else {
-      print("Could not open WhatsApp");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +29,7 @@ class CommunityScreen extends StatelessWidget {
                         icon: Icon(
                           Icons.list,
                           color: Colors.black,
-                          size: 35,
+                          size: 30,
                         ),
                         onPressed: () {
                           Scaffold.of(context).openDrawer();
@@ -61,7 +49,7 @@ class CommunityScreen extends StatelessWidget {
                     icon: Icon(
                       Icons.favorite,
                       color: Colors.black,
-                      size: 30,
+                      size: 25,
                     ),
                   ),
                   IconButton(
@@ -75,7 +63,7 @@ class CommunityScreen extends StatelessWidget {
                     icon: Icon(
                       Icons.person,
                       color: Colors.black,
-                      size: 30,
+                      size: 25,
                     ),
                   )
                 ],
@@ -98,8 +86,7 @@ class CommunityScreen extends StatelessWidget {
                 alignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton.icon(
-                    onPressed: openWhatsApp,
-                   // icon:const FaIcon(FontAwesomeIcons.whatsapp),
+                    onPressed: () {},
                     label: const Text(
                       'Join our community',
                       style: TextStyle(color: Colors.white),
@@ -124,10 +111,10 @@ class CommunityScreen extends StatelessWidget {
 
 
 // import 'package:flutter/material.dart';
-// import 'package:green_market/components/constants.dart';
-// import 'package:green_market/components/side_bar.dart';
-// import 'package:green_market/screens/favourites_screen.dart';
-// import 'package:green_market/screens/profile_screen.dart';
+// import 'package:green_market_test/components/constants.dart';
+// import 'package:green_market_test/components/side_bar.dart';
+// import 'package:green_market_test/screens/favourites_screen.dart';
+// import 'package:green_market_test/screens/profile_screen.dart';
 
 // class CommunityScreen extends StatelessWidget {
 //   const CommunityScreen({super.key});

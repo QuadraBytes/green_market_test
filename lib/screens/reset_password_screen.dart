@@ -1,30 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/constants.dart';
-import 'package:green_market_test/screens/create_profile_screen.dart';
+import 'package:green_market_test/screens/forget_password.dart';
 import 'package:green_market_test/screens/login_screen.dart';
+import 'package:green_market_test/screens/signin_screen.dart';
 
-class Signin extends StatefulWidget {
-  const Signin({super.key});
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key, required this.email});
+
+  final String email;
 
   @override
-  State<Signin> createState() => _SigninState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _SigninState extends State<Signin> {
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  final _auth = FirebaseAuth.instance;
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   bool showLoading = false;
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
 
-  void register() async {
+  void resetPassword() async {
     try {
-      if (emailController.text.isEmpty ||
-          passwordController.text.isEmpty ||
-          confirmPasswordController.text.isEmpty) {
+      if (passwordController.text.isEmpty || confirmController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('All fields are required'),
@@ -33,19 +32,17 @@ class _SigninState extends State<Signin> {
         );
         return;
       }
-
-      if (emailController.text.contains("@") == false ||
-          emailController.text.contains(".") == false) {
+      if (passwordController.text.length < 6) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Invalid Email'),
+            content: Text('Password must be at least 6 characters'),
             backgroundColor: Colors.red,
           ),
         );
         return;
       }
 
-      if (passwordController.text != confirmPasswordController.text) {
+      if (passwordController.text != confirmController.text) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Passwords do not match'),
@@ -55,31 +52,28 @@ class _SigninState extends State<Signin> {
         return;
       }
 
-      setState(() {
-        showLoading = true;
-      });
-
-      await _auth.createUserWithEmailAndPassword(
-        email: emailController.text,
+      User? user = (await _auth.signInWithEmailAndPassword(
+        email: widget.email,
         password: passwordController.text,
-      );
-      _auth
-          .signInWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text)
-          .then((signedUser) => {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateProfileScreen(),
-                    ))
-              });
-    } on Exception catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-          backgroundColor: Colors.red,
-        ),
-      );
+      ))
+          .user;
+
+      if (user != null) {
+        await user.updatePassword(passwordController.text);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Password reset successful!'),
+        ));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Login(),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${e.toString()}'),
+      ));
     }
   }
 
@@ -91,56 +85,35 @@ class _SigninState extends State<Signin> {
         body: Center(
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
                   "assets/images/logo.png",
-                  width: MediaQuery.of(context).size.height * 0.2,
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.height * 0.25,
+                  height: MediaQuery.of(context).size.height * 0.25,
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                 const Text(
-                  "REGISTER NOW",
+                  "RESET PASSWORD",
                   style: TextStyle(
                       fontSize: 20,
-                      letterSpacing: 2,
+                      letterSpacing: 3,
                       fontStyle: FontStyle.normal,
                       color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.85,
                   child: Form(
                     child: Column(
                       children: [
-                        TextField(
-                          controller: emailController,
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(
-                              color: kColor4,
-                            ),
-                            labelStyle: TextStyle(
-                              color: kColor4,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: kColor4)),
-                            labelText: "Email",
-                            hintText: "Enter your Email",
-                            prefixIcon: Icon(Icons.email),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
                         SizedBox(height: 20),
                         TextFormField(
                           controller: passwordController,
                           decoration: InputDecoration(
-                            labelText: "Password",
-                            hintText: "Enter your password",
+                            labelText: "New Password",
+                            hintText: "Enter a new password",
                             hintStyle: TextStyle(
                               color: kColor4,
                             ),
@@ -158,10 +131,10 @@ class _SigninState extends State<Signin> {
                         ),
                         SizedBox(height: 20),
                         TextFormField(
-                          controller: confirmPasswordController,
+                          controller: confirmController,
                           decoration: InputDecoration(
-                            labelText: "Confirm Password",
-                            hintText: "Enter your password again",
+                            labelText: "Confirm New Password",
+                            hintText: "Enter the new password again",
                             hintStyle: TextStyle(
                               color: kColor4,
                             ),
@@ -191,32 +164,15 @@ class _SigninState extends State<Signin> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                onPressed: register,
-                                child: Text("Register",
+                                onPressed: () {
+                                  resetPassword();
+                                },
+                                child: Text("Save Password",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold)),
                               ),
                         SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Already have an account?"),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Login(),
-                                    ));
-                              },
-                              child: Text("Sign In",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ),

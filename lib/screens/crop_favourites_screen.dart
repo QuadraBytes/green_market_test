@@ -31,6 +31,10 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
 
   Future<void> getUserFavourites() async {
     try {
+      setState(() {
+        showLoading = true;
+      });
+
       var userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(loggedInUser!.email)
@@ -45,6 +49,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
         if (cropFavouritesIdList.isEmpty) {
           setState(() {
             showLoading = false;
+            cropFavourites = [];
           });
           return;
         } else {
@@ -90,7 +95,9 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
         'cropFavourites': FieldValue.arrayRemove([cropId]),
       });
 
-      setState(() {
+      await getUserFavourites();
+
+      setState(() async {
         cropFavourites.remove(cropId);
       });
     } catch (e) {
@@ -128,7 +135,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(20)),
                     image: DecorationImage(
-                      image: AssetImage("assets/images/crop.jpg"),
+                      image: NetworkImage(data['images']),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -353,7 +360,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
             Positioned(
                 top: -50, child: Image.asset('assets/images/appbar2.png')),
             Positioned(
-              top: 20,
+              top: 15,
               left: 10,
               child: IconButton(
                 icon: Icon(
@@ -372,9 +379,9 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
               top: 25,
               left: size.width * 0.35,
               right: size.width * 0.3,
-              child: Text('Favourites',
+              child: Text('Favorites',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: size.height * 0.03,
                       fontWeight: FontWeight.w500,
                       color: Colors.white)),
             ),
@@ -393,9 +400,9 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                         ? Center(
                             child: Text(
                               'No Favourites Available',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
+                           style: TextStyle(
+                              fontSize: 15,
+                            ),
                             ),
                           )
                         : Container(
@@ -419,7 +426,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                                         ),
                                         color: kColor2,
                                         child: Container(
-                                          height: size.height * 0.20,
+                                          height: size.height * 0.22,
                                           padding: EdgeInsets.all(15.0),
                                           child: Column(
                                             children: [
@@ -441,8 +448,8 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                                                           height: size.height *
                                                               0.125,
                                                           fit: BoxFit.cover,
-                                                          image: AssetImage(
-                                                              "assets/images/crop.jpg"),
+                                                          image: NetworkImage(
+                                                              data['images']),
                                                         ),
                                                       ),
                                                       SizedBox(
