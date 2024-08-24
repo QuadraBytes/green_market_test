@@ -98,7 +98,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
             child: Column(

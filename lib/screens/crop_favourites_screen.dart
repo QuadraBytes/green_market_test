@@ -43,39 +43,31 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
       if (userDoc.exists) {
         List cropFavouritesList = [];
 
-        if (userDoc['cropFavourites'] == null) {
-          setState(() {
-            showLoading = false;
-            cropFavourites = [];
-          });
-          return;
-        }
 
-        List<String> cropFavouritesIdList =
-            List<String>.from(userDoc['cropFavourites']);
+        if (userDoc.data()!.containsKey('cropFavourites') &&
+            userDoc['cropFavourites'] != null) {
+          List<String> cropFavouritesIdList =
+              List<String>.from(userDoc['cropFavourites']);
 
-        if (cropFavouritesIdList.isEmpty) {
-          setState(() {
-            showLoading = false;
-            cropFavourites = [];
-          });
-          return;
-        } else {
           for (var id in cropFavouritesIdList) {
             var data = await FirebaseFirestore.instance
                 .collection('crops')
                 .doc(id)
                 .get();
 
-            if (data.exists) {
-              cropFavouritesList.add(data);
-            }
+            cropFavouritesList.add(data);
           }
-          setState(() {
-            cropFavourites = cropFavouritesList;
-            showLoading = false;
-          });
         }
+
+        setState(() {
+          cropFavourites = cropFavouritesList;
+          showLoading = false;
+        });
+      } else {
+        setState(() {
+          cropFavourites = [];
+          showLoading = false;
+        });
       }
     } catch (e) {
       print(e);
@@ -327,6 +319,20 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                             SizedBox(
                               width: 20,
                             ),
+                            FloatingActionButton(
+                              onPressed: () {
+                                removeCropFavourites(data.id);
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.call,
+                                color: Colors.white,
+                              ),
+                              backgroundColor: kColor,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
                           ],
                         ),
                       ),
@@ -376,10 +382,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BottomBarScreen()));
+                  Navigator.pop(context);
                 },
               ),
             ),

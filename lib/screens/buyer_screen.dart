@@ -936,36 +936,31 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                         //   width: 10,
                                                         // ),
 
-                                                        isRequireFavourite
-                                                            ? Container()
-                                                            : ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                                child:
-                                                                    Container(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .zero,
-                                                                  color: kColor,
-                                                                  child:
-                                                                      IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      addFavourites(
-                                                                          data.id);
-                                                                    },
-                                                                    icon: Icon(
-                                                                      size: 17,
-                                                                      Icons
-                                                                          .favorite,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  ),
-                                                                ),
+                                                        ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            color: kColor,
+                                                            child: IconButton(
+                                                              onPressed: () {
+                                                                addFavourites(
+                                                                    data.id);
+                                                              },
+                                                              icon: Icon(
+                                                                size: 17,
+                                                                Icons.favorite,
+                                                                color: isRequireFavourite
+                                                                    ? Colors
+                                                                        .black
+                                                                    : Colors
+                                                                        .white,
                                                               ),
+                                                            ),
+                                                          ),
+                                                        ),
                                                         SizedBox(
                                                           width: 10,
                                                         ),

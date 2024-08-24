@@ -147,11 +147,10 @@ class _AddCropScreenState extends State<AddCropScreen> {
           'isExpired': false,
           'images': downloadUrl,
         });
-
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
-          return const BottomBarScreen();
-        }));
+Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => BottomBarScreen()),
+      (Route<dynamic> route) => false,
+    );
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Failed to add crop: $error'),

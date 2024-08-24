@@ -110,7 +110,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           backgroundColor: Colors.green,
           content:
               Center(child: Text("Password reset email sent to your email"))));
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.red,

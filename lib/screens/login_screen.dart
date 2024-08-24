@@ -4,6 +4,7 @@ import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/constants.dart';
 import 'package:green_market_test/screens/forget_password.dart';
 import 'package:green_market_test/screens/signin_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,6 +18,11 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   final _auth = FirebaseAuth.instance;
+
+  void saveModeState(bool isSignIn) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSignIn', isSignIn);
+  }
 
   void signIn() async {
     try {
@@ -46,11 +52,15 @@ class _LoginState extends State<Login> {
 
       await _auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
+
+      saveModeState(true);
+
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const BottomBarScreen(),
           ));
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -68,7 +78,6 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -164,7 +173,7 @@ class _LoginState extends State<Login> {
                             Text("Forget password?"),
                             TextButton(
                               onPressed: () {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>

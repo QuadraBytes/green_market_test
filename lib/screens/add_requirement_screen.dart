@@ -86,10 +86,10 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
           'isExpired': false,
         });
 
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
-          return const BottomBarScreen();
-        }));
+      Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => BottomBarScreen()),
+      (Route<dynamic> route) => false,
+    );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
