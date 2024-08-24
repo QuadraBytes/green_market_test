@@ -43,7 +43,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
       if (userDoc.exists) {
         List cropFavouritesList = [];
 
-        if(userDoc['cropFavourites'] == null) {
+        if (userDoc['cropFavourites'] == null) {
           setState(() {
             showLoading = false;
             cropFavourites = [];
@@ -316,7 +316,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                           children: [
                             FloatingActionButton(
                               onPressed: () {
-                                _makePhoneCall(data['phoneNumber']);
+                                _makePhoneCall('0' + data['phoneNumber']);
                               },
                               child: Icon(
                                 Icons.call,
@@ -408,9 +408,9 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                         ? Center(
                             child: Text(
                               'No Favourites Available',
-                           style: TextStyle(
-                              fontSize: 15,
-                            ),
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
                             ),
                           )
                         : Container(
@@ -654,7 +654,8 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                                                                             IconButton(
                                                                           onPressed:
                                                                               () {
-                                                                            _makePhoneCall(data['phoneNumber']);
+                                                                            _makePhoneCall('0' +
+                                                                                data['phoneNumber']);
                                                                           },
                                                                           icon:
                                                                               Icon(

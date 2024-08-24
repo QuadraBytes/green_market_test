@@ -404,8 +404,9 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
                                                               child: IconButton(
                                                                 onPressed: () {
                                                                   _makePhoneCall(
-                                                                      data[
-                                                                          'phoneNumber']);
+                                                                      '0' +
+                                                                          data[
+                                                                              'phoneNumber']);
                                                                 },
                                                                 icon: Icon(
                                                                   size: 20,

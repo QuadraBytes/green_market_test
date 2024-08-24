@@ -477,7 +477,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                           children: [
                             FloatingActionButton(
                               onPressed: () {
-                                _makePhoneCall(data['phoneNumber']);
+                                _makePhoneCall('0' + data['phoneNumber']);
                               },
                               child: Icon(
                                 Icons.call,
@@ -1424,8 +1424,8 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                                     onPressed:
                                                                         () {
                                                                       _makePhoneCall(
-                                                                          data[
-                                                                              'phoneNumber']);
+                                                                          '0' +
+                                                                              data['phoneNumber']);
                                                                     },
                                                                     icon: Icon(
                                                                       size: 17,
@@ -1440,34 +1440,37 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                               SizedBox(
                                                                 width: 10,
                                                               ),
-                                                               ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      child:
-                                                                          Container(
-                                                                        padding:
-                                                                            EdgeInsets.zero,
-                                                                        color:
-                                                                            kColor,
-                                                                        child:
-                                                                            IconButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            addFavourites(data.id);
-                                                                          },
-                                                                          icon:
-                                                                              Icon(
-                                                                            size:
-                                                                                17,
-                                                                            Icons.favorite,
-                                                                            color: isFavouriteCrop ? 
-                                                                              Colors.black
-                                                                               : Colors.white,
-                                                                          ),
-                                                                        ),
-                                                                      ),
+                                                              ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  color: kColor,
+                                                                  child:
+                                                                      IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      addFavourites(
+                                                                          data.id);
+                                                                    },
+                                                                    icon: Icon(
+                                                                      size: 17,
+                                                                      Icons
+                                                                          .favorite,
+                                                                      color: isFavouriteCrop
+                                                                          ? Colors
+                                                                              .black
+                                                                          : Colors
+                                                                              .white,
                                                                     ),
+                                                                  ),
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                         ),

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/constants.dart';
 import 'package:green_market_test/models/models.dart';
@@ -236,6 +237,11 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                             //   }
                             //   return null;
                             // },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter
+                                  .digitsOnly, // Only allow digits
+                            ],
                             onSaved: (value) {
                               _phoneNumber = value;
                             },
