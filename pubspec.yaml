@@ -48,6 +48,9 @@ dependencies:
   pinput: ^5.0.0
   speech_to_text: ^6.6.2
   font_awesome_flutter: ^10.7.0
+  connectivity_plus: ^6.0.5
+  shared_preferences: ^2.2.3
+
 
 dev_dependencies:
   flutter_test:

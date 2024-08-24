@@ -30,19 +30,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List crops = [];
   List requirements = [];
 
-  // bool isBuyerMode = false;
-
-  // Future<void> loadModeState() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     isBuyerMode = prefs.getBool('isBuyerMode') ?? false;
-  //   });
-  // }
-
-  // void saveModeState(bool isBuyerMode) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setBool('isBuyerMode', isBuyerMode);
-  // }
+  void saveModeState(bool isSignIn) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSignIn', isSignIn);
+  }
 
   Future<void> getUserData() async {
     loggedInUser = _auth.currentUser!;
@@ -78,6 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void logout() async {
     await _auth.signOut();
+    saveModeState(false);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => Login()));
   }

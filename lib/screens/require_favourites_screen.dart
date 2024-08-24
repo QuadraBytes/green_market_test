@@ -55,19 +55,29 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
 
       if (userDoc.exists) {
         List requireFavouritesList = [];
-        List<String> requireFavouritesIdList =
-            List<String>.from(userDoc['requireFavourites'] ?? []);
 
-        for (var id in requireFavouritesIdList) {
-          var data = await FirebaseFirestore.instance
-              .collection('requirements')
-              .doc(id)
-              .get();
+        if (userDoc.data()!.containsKey('requireFavourites') &&
+            userDoc['requireFavourites'] != null) {
+          List<String> requireFavouritesIdList =
+              List<String>.from(userDoc['requireFavourites']);
 
-          requireFavouritesList.add(data);
+          for (var id in requireFavouritesIdList) {
+            var data = await FirebaseFirestore.instance
+                .collection('requirements')
+                .doc(id)
+                .get();
+
+            requireFavouritesList.add(data);
+          }
         }
+
         setState(() {
           requireFavourites = requireFavouritesList;
+          showLoading = false;
+        });
+      } else {
+        setState(() {
+          requireFavourites = [];
           showLoading = false;
         });
       }

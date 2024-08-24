@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:green_market_test/components/farmer_screen_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:green_market_test/components/constants.dart';
@@ -488,18 +487,19 @@ class _FarmerScreenState extends State<FarmerScreen> {
                             SizedBox(
                               width: 20,
                             ),
-                            isFavourite
-                                ? Container()
-                                : FloatingActionButton(
-                                    onPressed: () {
-                                      addFavourites(data.id);
-                                    },
-                                    child: Icon(
-                                      Icons.favorite,
-                                      color: Colors.white,
-                                    ),
-                                    backgroundColor: kColor,
-                                  ),
+                            FloatingActionButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                addFavourites(data.id);
+                                _showCropDetails(data, images, true);
+                              },
+                              child: Icon(
+                                Icons.favorite,
+                                color:
+                                    isFavourite ? Colors.black : Colors.white,
+                              ),
+                              backgroundColor: kColor,
+                            ),
                             SizedBox(
                               width: 10,
                             )
@@ -1440,34 +1440,37 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                               SizedBox(
                                                                 width: 10,
                                                               ),
-                                                               ClipRRect(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                      child:
-                                                                          Container(
-                                                                        padding:
-                                                                            EdgeInsets.zero,
-                                                                        color:
-                                                                            kColor,
-                                                                        child:
-                                                                            IconButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            addFavourites(data.id);
-                                                                          },
-                                                                          icon:
-                                                                              Icon(
-                                                                            size:
-                                                                                17,
-                                                                            Icons.favorite,
-                                                                            color: isFavouriteCrop ? 
-                                                                              Colors.black
-                                                                               : Colors.white,
-                                                                          ),
-                                                                        ),
-                                                                      ),
+                                                              ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                child:
+                                                                    Container(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  color: kColor,
+                                                                  child:
+                                                                      IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      addFavourites(
+                                                                          data.id);
+                                                                    },
+                                                                    icon: Icon(
+                                                                      size: 17,
+                                                                      Icons
+                                                                          .favorite,
+                                                                      color: isFavouriteCrop
+                                                                          ? Colors
+                                                                              .black
+                                                                          : Colors
+                                                                              .white,
                                                                     ),
+                                                                  ),
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                         ),
