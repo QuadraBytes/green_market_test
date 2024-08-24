@@ -134,10 +134,8 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BottomBarScreen()));
+                  Navigator.pop(
+                      context,);
                 },
               ),
             ),

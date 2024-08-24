@@ -173,7 +173,7 @@ class _LoginState extends State<Login> {
                             Text("Forget password?"),
                             TextButton(
                               onPressed: () {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>

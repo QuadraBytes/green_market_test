@@ -117,9 +117,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         'buyerName': displayNameController.text,
       });
     }
-
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => BottomBarScreen()));
+Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => BottomBarScreen()),
+      (Route<dynamic> route) => false,
+    );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

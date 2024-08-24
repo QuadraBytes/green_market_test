@@ -381,10 +381,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BottomBarScreen()));
+                  Navigator.pop(context);
                 },
               ),
             ),
