@@ -43,6 +43,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
       if (userDoc.exists) {
         List cropFavouritesList = [];
 
+
         if (userDoc.data()!.containsKey('cropFavourites') &&
             userDoc['cropFavourites'] != null) {
           List<String> cropFavouritesIdList =
@@ -307,7 +308,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                           children: [
                             FloatingActionButton(
                               onPressed: () {
-                                _makePhoneCall(data['phoneNumber']);
+                                _makePhoneCall('0' + data['phoneNumber']);
                               },
                               child: Icon(
                                 Icons.call,
@@ -656,7 +657,8 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                                                                             IconButton(
                                                                           onPressed:
                                                                               () {
-                                                                            _makePhoneCall(data['phoneNumber']);
+                                                                            _makePhoneCall('0' +
+                                                                                data['phoneNumber']);
                                                                           },
                                                                           icon:
                                                                               Icon(

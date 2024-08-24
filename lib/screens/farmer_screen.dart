@@ -476,7 +476,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                           children: [
                             FloatingActionButton(
                               onPressed: () {
-                                _makePhoneCall(data['phoneNumber']);
+                                _makePhoneCall('0' + data['phoneNumber']);
                               },
                               child: Icon(
                                 Icons.call,
@@ -1424,8 +1424,8 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                                     onPressed:
                                                                         () {
                                                                       _makePhoneCall(
-                                                                          data[
-                                                                              'phoneNumber']);
+                                                                          '0' +
+                                                                              data['phoneNumber']);
                                                                     },
                                                                     icon: Icon(
                                                                       size: 17,

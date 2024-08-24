@@ -974,8 +974,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                             color: kColor,
                                                             child: IconButton(
                                                               onPressed: () {
-                                                                _makePhoneCall(data[
-                                                                    'phoneNumber']);
+                                                                _makePhoneCall('0' +
+                                                                    data[
+                                                                        'phoneNumber']);
                                                               },
                                                               icon: Icon(
                                                                 size: 17,
