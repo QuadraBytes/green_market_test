@@ -8,6 +8,7 @@ import 'package:green_market_test/screens/add_requirement_screen.dart';
 import 'package:green_market_test/screens/favourites_screen.dart';
 import 'package:green_market_test/screens/profile_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 late User? loggedInUser;
@@ -36,6 +37,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
   late List filterList = [];
   late List unionRequireList = [];
   List<String> requireFavourites = [];
+
+  var isListening = false;
+  SpeechToText speech = SpeechToText();
 
   final _auth = FirebaseAuth.instance;
 
@@ -504,6 +508,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
     }
   }
 
+  Color iColor = Colors.black;
+  IconData iIcon = Icons.mic_off_rounded;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -596,10 +603,47 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                     Icons.search,
                                     color: Colors.black,
                                   ),
-                                  suffixIcon: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.mic_outlined,
+                                  suffixIcon: GestureDetector(
+                                    onTap: () async {
+                                      if (!isListening) {
+                                        bool available =
+                                            await speech.initialize(
+                                          onStatus: (status) {
+                                            print('status: $status');
+                                          },
+                                          onError: (errorNotification) {
+                                            print('error: $errorNotification');
+                                          },
+                                        );
+                                        if (available) {
+                                          setState(() {
+                                            isListening = true;
+                                            iColor = kColor;
+                                            iIcon = Icons.mic_rounded;
+                                          });
+
+                                          speech.listen(
+                                            onResult: (result) {
+                                              setState(() {
+                                                searchText.text =
+                                                    result.recognizedWords;
+                                                searchFilter();
+                                              });
+                                            },
+                                          );
+                                        }
+                                      } else {
+                                        setState(() {
+                                          isListening = false;
+                                          iColor = Colors.black;
+                                          iIcon = Icons.mic_off_rounded;
+                                        });
+                                        speech.stop();
+                                      }
+                                    },
+                                    child: Icon(
+                                      iIcon,
+                                      color: iColor,
                                     ),
                                   ),
                                   hintText: 'Search Crop',

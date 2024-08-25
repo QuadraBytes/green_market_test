@@ -919,6 +919,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
   }
 
   Color iColor = Colors.black;
+  IconData iIcon = Icons.mic_off_rounded;
 
   @override
   Widget build(BuildContext context) {
@@ -1025,6 +1026,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                         setState(() {
                                           isListening = true;
                                           iColor = kColor;
+                                          iIcon = Icons.mic_rounded;
                                         });
 
                                         speech.listen(
@@ -1041,12 +1043,14 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                     } else {
                                       setState(() {
                                         isListening = false;
+                                        iColor = Colors.black;
+                                        iIcon = Icons.mic_off_rounded;
                                       });
                                       speech.stop();
                                     }
                                   },
                                   child: Icon(
-                                    Icons.mic_outlined,
+                                    iIcon,
                                     color: iColor,
                                   ),
                                 ),

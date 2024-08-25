@@ -86,10 +86,10 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
           'isExpired': false,
         });
 
-      Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => BottomBarScreen()),
-      (Route<dynamic> route) => false,
-    );
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => BottomBarScreen()),
+          (Route<dynamic> route) => false,
+        );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -101,19 +101,28 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
     }
   }
 
-    void showCropTypes() {
+  void showCropTypes() {
     showModalBottomSheet<void>(
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
         builder: (BuildContext context) {
           return DefaultTabController(
             length: 2,
             child: Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.white,
+                automaticallyImplyLeading: false,
                 elevation: 0,
+                toolbarHeight: 20,
                 bottom: const TabBar(
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: kColor,
+                  labelColor: Colors.black,
                   tabs: [
-                    Tab(text: 'Vegetables'),
+                    Tab(
+                      text: 'Vegetables',
+                    ),
                     Tab(text: 'Fruits'),
                   ],
                 ),
@@ -121,7 +130,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
               body: TabBarView(
                 children: [
                   Container(
-                    color: Colors.white, // Background color for Vegetables
+                    margin: EdgeInsets.only(left: 10, top: 10),
                     child: ListView.builder(
                       itemCount: vegetables.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -141,7 +150,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                     ),
                   ),
                   Container(
-                    color: Colors.white, // Background color for Fruits
+                    margin: EdgeInsets.only(left: 10, top: 10),
                     child: ListView.builder(
                       itemCount: fruits.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -153,7 +162,6 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                           onTap: () {
                             setState(() {
                               _cropType = fruits[index];
-                              //  _cropTypeController.text = _cropType; // Update the TextFormField
                             });
                             Navigator.pop(context);
                           },
@@ -315,7 +323,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                           ),
                         ),
                         SizedBox(width: size.width * 0.04),
-                       Expanded(
+                        Expanded(
                           child: GestureDetector(
                             onTap: showCropTypes,
                             child: AbsorbPointer(
@@ -338,7 +346,6 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                                   text: _cropType == null
                                       ? ''
                                       : _cropType.toString(),
-                                          
                                 ),
                               ),
                             ),

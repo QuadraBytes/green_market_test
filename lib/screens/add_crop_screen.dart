@@ -151,16 +151,25 @@ class _AddCropScreenState extends State<AddCropScreen> {
   void showCropTypes() {
     showModalBottomSheet<void>(
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
         builder: (BuildContext context) {
           return DefaultTabController(
             length: 2,
             child: Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.white,
+                automaticallyImplyLeading: false,
                 elevation: 0,
+                toolbarHeight: 20,
                 bottom: const TabBar(
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: kColor,
+                  labelColor: Colors.black,
                   tabs: [
-                    Tab(text: 'Vegetables'),
+                    Tab(
+                      text: 'Vegetables',
+                    ),
                     Tab(text: 'Fruits'),
                   ],
                 ),
@@ -168,7 +177,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
               body: TabBarView(
                 children: [
                   Container(
-                    color: Colors.white, // Background color for Vegetables
+                    margin: EdgeInsets.only(left: 10, top: 10),
                     child: ListView.builder(
                       itemCount: vegetables.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -188,7 +197,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                     ),
                   ),
                   Container(
-                    color: Colors.white, // Background color for Fruits
+                    margin: EdgeInsets.only(left: 10, top: 10),
                     child: ListView.builder(
                       itemCount: fruits.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -200,7 +209,6 @@ class _AddCropScreenState extends State<AddCropScreen> {
                           onTap: () {
                             setState(() {
                               _cropType = fruits[index];
-                              //  _cropTypeController.text = _cropType; // Update the TextFormField
                             });
                             Navigator.pop(context);
                           },
