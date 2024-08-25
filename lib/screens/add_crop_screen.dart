@@ -113,17 +113,6 @@ class _AddCropScreenState extends State<AddCropScreen> {
       }
 
       try {
-        // List imagesUrls = [];
-
-        // for (var image in _images) {
-        //   var imageName = DateTime.now().millisecondsSinceEpoch.toString();
-        //   var storageRef =
-        //       FirebaseStorage.instance.ref().child('$imageName.jpg');
-        //   var uploadTask = storageRef.putFile(image!);
-        //   var downloadUrl = await (await uploadTask).ref.getDownloadURL();
-        //   imagesUrls.add(downloadUrl);
-        // }
-
         var imageName = DateTime.now().millisecondsSinceEpoch.toString();
         var storageRef = FirebaseStorage.instance.ref().child('$imageName.jpg');
         var uploadTask = storageRef.putFile(_image!);
@@ -147,16 +136,83 @@ class _AddCropScreenState extends State<AddCropScreen> {
           'isExpired': false,
           'images': downloadUrl,
         });
-Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => BottomBarScreen()),
-      (Route<dynamic> route) => false,
-    );
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => BottomBarScreen()),
+          (Route<dynamic> route) => false,
+        );
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Failed to add crop: $error'),
             backgroundColor: Colors.red));
       }
     }
+  }
+
+  void showCropTypes() {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                bottom: const TabBar(
+                  tabs: [
+                    Tab(text: 'Vegetables'),
+                    Tab(text: 'Fruits'),
+                  ],
+                ),
+              ),
+              body: TabBarView(
+                children: [
+                  Container(
+                    color: Colors.white, // Background color for Vegetables
+                    child: ListView.builder(
+                      itemCount: vegetables.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(
+                            vegetables[index],
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _cropType = vegetables[index];
+                            });
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    color: Colors.white, // Background color for Fruits
+                    child: ListView.builder(
+                      itemCount: fruits.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(
+                            fruits[index],
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _cropType = fruits[index];
+                              //  _cropTypeController.text = _cropType; // Update the TextFormField
+                            });
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -268,8 +324,7 @@ Navigator.of(context).pushAndRemoveUntil(
                             style: TextStyle(fontWeight: FontWeight.w500),
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter
-                                  .digitsOnly, // Only allow digits
+                              FilteringTextInputFormatter.digitsOnly,
                             ],
                             onSaved: (value) {
                               _phoneNumber = value;
@@ -278,36 +333,31 @@ Navigator.of(context).pushAndRemoveUntil(
                         ),
                         SizedBox(width: size.width * 0.04),
                         Expanded(
-                          child: DropdownButtonFormField<String>(
-                            decoration: InputDecoration(
-                                labelText: 'Crop Type',
-                                labelStyle: TextStyle(
-                                  fontSize: size.height * 0.02,
-                                  color: kColor4,
+                          child: GestureDetector(
+                            onTap: showCropTypes,
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Crop Type',
+                                    labelStyle: TextStyle(
+                                      color: kColor4,
+                                      fontSize: size.height * 0.02,
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black)),
+                                    suffixIcon: Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      size: size.height * 0.025,
+                                      color: kColor4,
+                                    )),
+                                controller: TextEditingController(
+                                  text: _cropType == null
+                                      ? ''
+                                      : _cropType.toString(),
                                 ),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.black))),
-                            icon: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Icon(
-                                Icons.keyboard_arrow_down_outlined,
-                                size: size.height * 0.025,
-                                color: kColor4,
                               ),
                             ),
-                            items: cropTypes.map((String crop) {
-                              return DropdownMenuItem<String>(
-                                value: crop,
-                                child: Text('$crop',
-                                    style: TextStyle(fontSize: 16)),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _cropType = value;
-                              });
-                            },
                           ),
                         ),
                       ],

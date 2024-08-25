@@ -69,8 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    loadModeState();
-    checkInternetConnection();
+    loadModeState().then((_) => checkInternetConnection());
   }
 
   @override
