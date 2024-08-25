@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,8 @@ class AddCropScreen extends StatefulWidget {
 
 class _AddCropScreenState extends State<AddCropScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _cropTypeController = TextEditingController();
+
   String? _farmerName;
   String? _district;
   String? _address;
@@ -31,6 +35,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
   DateTime? _expiringDate;
   String? _price;
   File? _image;
+  //String? _vegetables;
   final _auth = FirebaseAuth.instance;
 
   final ImagePicker _picker = ImagePicker();
@@ -127,6 +132,8 @@ class _AddCropScreenState extends State<AddCropScreen> {
         var storageRef = FirebaseStorage.instance.ref().child('$imageName.jpg');
         var uploadTask = storageRef.putFile(_image!);
         var downloadUrl = await (await uploadTask).ref.getDownloadURL();
+
+        
 
         await cropsCollection.add({
           'userId': loggedInUser?.uid,
@@ -273,39 +280,197 @@ class _AddCropScreenState extends State<AddCropScreen> {
                           ),
                         ),
                         SizedBox(width: size.width * 0.04),
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            decoration: InputDecoration(
-                                labelText: 'Crop Type',
-                                labelStyle: TextStyle(
-                                  fontSize: size.height * 0.02,
-                                  color: kColor4,
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.black))),
-                            icon: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Icon(
-                                Icons.keyboard_arrow_down_outlined,
-                                size: size.height * 0.025,
-                                color: kColor4,
-                              ),
-                            ),
-                            items: cropTypes.map((String crop) {
-                              return DropdownMenuItem<String>(
-                                value: crop,
-                                child: Text('$crop',
-                                    style: TextStyle(fontSize: 16)),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _cropType = value;
-                              });
-                            },
+                           
+//                            Expanded(
+//                            child: TextFormField(
+//                            controller: _cropTypeController,
+//                            readOnly: true, // Makes the field non-editable
+//                            decoration: InputDecoration(
+//                            labelText: 'Crop Type',
+//                            labelStyle: TextStyle(
+//                            fontSize: size.height * 0.02,
+//                            color: kColor4,
+//                             ),
+//                           suffixIcon: Icon(
+//                           Icons.keyboard_arrow_down_outlined,
+//                          size: size.height * 0.025,
+//                         color: kColor4,
+//                         ),
+//                           ),
+//                    onTap: () {
+//                    showModalBottomSheet<void>(
+//                    context: context,
+//                    builder: (BuildContext context) {
+//                    return SizedBox(
+//                    height: MediaQuery.of(context).size.height * 0.5,
+//                    child: Column(
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+//                    children: [
+//                    const Padding(
+//                   padding: const EdgeInsets.all(16.0),
+//                   child: Text(
+//                     'Vegetables',
+//                     //textAlign:TextAlign.center ,
+//                     style: TextStyle(
+//                       fontSize: 18,
+//                       fontWeight: FontWeight.bold,
+//                       color: kColor4,
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: ListView.builder(
+//                     itemCount: vegetables.length + fruits.length,
+//                     itemBuilder: (BuildContext context, int index) {
+//                       return ListTile(
+//                         title: Text(
+//                           vegetables[index],
+//                           style: TextStyle(fontSize: 16),
+//                         ),
+//                         onTap: () {
+//                           setState(() {
+//                             _cropTypeController.text = cropTypes[index];
+//                           });
+//                           Navigator.pop(context);
+//                         },
+//                       );
+//                     },
+//                   ),
+//                 ),
+                 
+//               ],
+//             ),
+//           );
+//         },
+//       );
+//     },
+//   ),
+// )
+
+                                               Expanded(
+                      child: TextFormField(
+                        controller: _cropTypeController,
+                        readOnly: true, // Makes the field non-editable
+                        decoration: InputDecoration(
+                          labelText: 'Crop Type',
+                          labelStyle: TextStyle(
+                            fontSize: size.height * 0.02,
+                            color: Colors.grey, // Replace with your color
+                          ),
+                          suffixIcon: Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            size: size.height * 0.025,
+                            color: Colors.grey, // Replace with your color
                           ),
                         ),
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DefaultTabController(
+                                length: 2,
+                                child: Scaffold(
+                                  appBar: AppBar(
+                                    backgroundColor: Colors.white,
+                                    elevation: 0,
+                                    bottom: const TabBar(
+                                      tabs: [
+                                        Tab(text: 'Vegetables'),
+                                        Tab(text: 'Fruits'),
+                                      ],
+                                    ),
+                                  ),
+                                  body: TabBarView(
+                                    children: [
+                                      Container(
+                                        color: Colors.white, // Background color for Vegetables
+                                        child: ListView.builder(
+                                          itemCount: vegetables.length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            return ListTile(
+                                              title: Text(
+                                                vegetables[index],
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                              onTap: () {
+                                                setState(() {
+                                                  _cropTypeController.text = vegetables[index];
+                                               //   _cropTypeController.text = _cropType; // Update the TextFormField
+
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                        color: Colors.white, // Background color for Fruits
+                                        child: ListView.builder(
+                                          itemCount: fruits.length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            return ListTile(
+                                              title: Text(
+                                                fruits[index],
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                              onTap: () {
+                                                setState(() {
+                                                  _cropTypeController.text = fruits[index];
+                                                //  _cropTypeController.text = _cropType; // Update the TextFormField
+
+                                                });
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    )
+
+
+
+                        // Expanded(
+                        //   child: DropdownButtonFormField<String>(
+                        //     decoration: InputDecoration(
+                        //         labelText: 'Crop Type',
+                        //         labelStyle: TextStyle(
+                        //           fontSize: size.height * 0.02,
+                        //           color: kColor4,
+                        //         ),
+                        //         focusedBorder: UnderlineInputBorder(
+                        //             borderSide:
+                        //                 BorderSide(color: Colors.black))),
+                        //     icon: Padding(
+                        //       padding: const EdgeInsets.only(right: 8.0),
+                        //       child: Icon(
+                        //         Icons.keyboard_arrow_down_outlined,
+                        //         size: size.height * 0.025,
+                        //         color: kColor4,
+                        //       ),
+                        //     ),
+                        //     items: cropTypes.map((String crop) {
+                        //       return DropdownMenuItem<String>(
+                        //         value: crop,
+                        //         child: Text('$crop',
+                        //             style: TextStyle(fontSize: 16)),
+                        //       );
+                        //     }).toList(),
+                        //     onChanged: (value) {
+                        //       setState(() {
+                        //         _cropType = value;
+                        //       });
+                        //     },
+                        //   ),
+                       // ), 
                       ],
                     ),
                     SizedBox(height: size.height * 0.02),

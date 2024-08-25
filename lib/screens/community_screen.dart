@@ -10,9 +10,11 @@ class CommunityScreen extends StatelessWidget {
   const CommunityScreen({super.key});
 
   void openWhatsApp() async {
-    const whatsappUrl = "https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW.";
-    if (await canLaunch(whatsappUrl)) {
-      await launch(whatsappUrl);
+    const String whatsappUrl = "https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW";
+    final Uri uri = Uri.parse(whatsappUrl);
+
+    if (await canLaunch(uri.toString())) {
+      await launch(uri.toString());
     } else {
       print("Could not open WhatsApp");
     }
@@ -31,13 +33,13 @@ class CommunityScreen extends StatelessWidget {
               FocusScope.of(context).requestFocus(FocusNode());
             },
             child: Container(
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: Row(
                 children: [
                   Builder(
                     builder: (context) {
                       return IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.list,
                           color: Colors.black,
                           size: 30,
@@ -54,10 +56,10 @@ class CommunityScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => FavouritesScreen()),
+                            builder: (context) => const FavouritesScreen()),
                       );
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.favorite,
                       color: Colors.black,
                       size: 25,
@@ -68,10 +70,10 @@ class CommunityScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProfileScreen()),
+                            builder: (context) => const ProfileScreen()),
                       );
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.person,
                       color: Colors.black,
                       size: 25,
@@ -98,7 +100,7 @@ class CommunityScreen extends StatelessWidget {
                 children: [
                   ElevatedButton.icon(
                     onPressed: openWhatsApp,
-                    // icon:const FaIcon(FontAwesomeIcons.whatsapp),
+                    icon: const FaIcon(FontAwesomeIcons.whatsapp),
                     label: const Text(
                       'Join our community',
                       style: TextStyle(color: Colors.white),
@@ -127,9 +129,20 @@ class CommunityScreen extends StatelessWidget {
 // import 'package:green_market_test/components/side_bar.dart';
 // import 'package:green_market_test/screens/favourites_screen.dart';
 // import 'package:green_market_test/screens/profile_screen.dart';
+// import 'package:url_launcher/url_launcher.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // class CommunityScreen extends StatelessWidget {
 //   const CommunityScreen({super.key});
+
+//   void openWhatsApp() async {
+//     const whatsappUrl = "https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW.";
+//     if (await canLaunch(whatsappUrl)) {
+//       await launch(whatsappUrl);
+//     } else {
+//       print("Could not open WhatsApp");
+//     }
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -153,7 +166,7 @@ class CommunityScreen extends StatelessWidget {
 //                         icon: Icon(
 //                           Icons.list,
 //                           color: Colors.black,
-//                           size: 35,
+//                           size: 30,
 //                         ),
 //                         onPressed: () {
 //                           Scaffold.of(context).openDrawer();
@@ -173,7 +186,7 @@ class CommunityScreen extends StatelessWidget {
 //                     icon: Icon(
 //                       Icons.favorite,
 //                       color: Colors.black,
-//                       size: 30,
+//                       size: 25,
 //                     ),
 //                   ),
 //                   IconButton(
@@ -187,7 +200,7 @@ class CommunityScreen extends StatelessWidget {
 //                     icon: Icon(
 //                       Icons.person,
 //                       color: Colors.black,
-//                       size: 30,
+//                       size: 25,
 //                     ),
 //                   )
 //                 ],
@@ -210,7 +223,8 @@ class CommunityScreen extends StatelessWidget {
 //                 alignment: MainAxisAlignment.center,
 //                 children: [
 //                   ElevatedButton.icon(
-//                     onPressed: () {},
+//                     onPressed: openWhatsApp,
+//                     // icon:const FaIcon(FontAwesomeIcons.whatsapp),
 //                     label: const Text(
 //                       'Join our community',
 //                       style: TextStyle(color: Colors.white),
@@ -234,27 +248,3 @@ class CommunityScreen extends StatelessWidget {
 
 
 
-
-
-// class CommunityScreen extends StatefulWidget {
-//   const CommunityScreen({super.key});
-
-//   @override
-//   State<CommunityScreen> createState() => _CommunityScreenState();
-// }
-
-// class _CommunityScreenState extends State<CommunityScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         drawer: const SideBar(),
-//         appBar: AppBar(
-//           title: const Text('Community '),
-//           backgroundColor: Color.fromARGB(255, 12, 231, 99),
-//         ),
-//         body: Text("Community Screen"),
-//       ),
-//     );
-//   }
-// }
