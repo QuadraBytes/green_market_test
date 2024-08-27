@@ -284,9 +284,10 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            maxLength: 10,
                             decoration: InputDecoration(
                                 labelText: 'Phone Number',
-                                prefixText: '+94 ',
+                                counterText: '',
                                 suffixIcon: Icon(
                                   Icons.phone,
                                   size: size.height * 0.025,
@@ -304,7 +305,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                                 hintStyle: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.normal),
-                                hintText: 'XX XXX XXX'),
+                                hintText: 'XXX XXX XXX'),
                             style: TextStyle(fontWeight: FontWeight.w500),
                             // validator: (value) {
                             //   if (value == null || value.isEmpty) {

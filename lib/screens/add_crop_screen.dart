@@ -112,6 +112,16 @@ class _AddCropScreenState extends State<AddCropScreen> {
         return;
       }
 
+      if (_phoneNumber.toString().length != 10) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid phone number'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
       try {
         var imageName = DateTime.now().millisecondsSinceEpoch.toString();
         var storageRef = FirebaseStorage.instance.ref().child('$imageName.jpg');
@@ -308,6 +318,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            maxLength: 10,
                             decoration: InputDecoration(
                                 labelText: 'Phone Number',
                                 suffixIcon: Icon(
@@ -319,16 +330,16 @@ class _AddCropScreenState extends State<AddCropScreen> {
                                   color: kColor4,
                                   fontSize: size.height * 0.02,
                                 ),
+                                counterText: '',
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
                                         BorderSide(color: Colors.black)),
-                                prefixText: '+94 ',
                                 prefixStyle:
                                     TextStyle(fontWeight: FontWeight.w500),
                                 hintStyle: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.normal),
-                                hintText: 'XX XXX XXX'),
+                                hintText: 'XXX XXX XXX'),
                             style: TextStyle(fontWeight: FontWeight.w500),
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[

@@ -9,14 +9,23 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class CommunityScreen extends StatelessWidget {
   const CommunityScreen({super.key});
 
+  // void openWhatsApp() async {
+  //   const whatsappUrl = "https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW.";
+  //   if (await canLaunch(whatsappUrl)) {
+  //     await launch(whatsappUrl);
+  //   } else {
+  //     print("Could not open WhatsApp");
+  //   }
+  // }
+
   void openWhatsApp() async {
-    const whatsappUrl = "https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW.";
-    if (await canLaunch(whatsappUrl)) {
-      await launch(whatsappUrl);
-    } else {
-      print("Could not open WhatsApp");
-    }
+  final Uri whatsappUrl = Uri.parse("https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW");
+  if (await canLaunch(whatsappUrl.toString())) {
+    await launch(whatsappUrl.toString());
+  } else {
+    print("Could not open WhatsApp");
   }
+}
 
   @override
   Widget build(BuildContext context) {

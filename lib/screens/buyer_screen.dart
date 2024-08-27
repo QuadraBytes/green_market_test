@@ -789,7 +789,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                 searchFocusNode.unfocus();
                               },
                               child: Container(
-                                margin: EdgeInsets.only(top: 10),
+                                margin: index == (unionRequireList.length - 1)
+                                    ? EdgeInsets.only(top: 10, bottom: 30)
+                                    : EdgeInsets.only(top: 10),
                                 child: Card(
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
@@ -1018,7 +1020,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                             color: kColor,
                                                             child: IconButton(
                                                               onPressed: () {
-                                                                _makePhoneCall('0' +
+                                                                _makePhoneCall(
                                                                     data[
                                                                         'phoneNumber']);
                                                               },

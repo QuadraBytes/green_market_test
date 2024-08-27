@@ -1428,8 +1428,8 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                                     onPressed:
                                                                         () {
                                                                       _makePhoneCall(
-                                                                          '0' +
-                                                                              data['phoneNumber']);
+                                                                          data[
+                                                                              'phoneNumber']);
                                                                     },
                                                                     icon: Icon(
                                                                       size: 17,

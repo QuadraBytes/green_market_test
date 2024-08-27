@@ -266,7 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (BuildContext context) {
         final size = MediaQuery.of(context).size;
         return Container(
-          height: size.height * 0.45,
+          height: size.height * 0.5,
           child: Stack(children: [
             Column(
               children: [
@@ -786,8 +786,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Navigator.pop(
-                        context);
+                    Navigator.pop(context);
                   },
                 )),
             Positioned(
@@ -1022,6 +1021,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     SizedBox(height: 5),
                                                     Text(
                                                       crop['cropType'],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                         fontSize:
                                                             size.height * 0.02,
@@ -1160,6 +1161,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     SizedBox(height: 5),
                                                     Text(
                                                       requirement['cropType'],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       style: TextStyle(
                                                         fontSize:
                                                             size.height * 0.02,
