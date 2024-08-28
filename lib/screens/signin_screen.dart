@@ -6,6 +6,7 @@ import 'package:green_market_test/components/constants.dart';
 import 'package:green_market_test/screens/create_profile_screen.dart';
 import 'package:green_market_test/screens/login_screen.dart';
 import 'package:green_market_test/screens/verify_email_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -20,6 +21,11 @@ class _SigninState extends State<Signin> {
   TextEditingController emailController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   bool showLoading = false;
+
+  void saveModeState(bool isSignIn) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSignIn', isSignIn);
+  }
 
   void register() async {
     try {
@@ -56,14 +62,21 @@ class _SigninState extends State<Signin> {
         return;
       }
 
-      Navigator.push(context,
-        MaterialPageRoute(
-          builder: (context) => VerifyEmailScreen(
-            email: emailController.text,
-            password: passwordController.text,
-          ),
-        ),
+      await _auth.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
       );
+      _auth
+          .signInWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text)
+          .then((signedUser) => {
+                saveModeState(true),
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateProfileScreen(),
+                    ))
+              });
      
     } on Exception catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -79,7 +92,6 @@ class _SigninState extends State<Signin> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
             child: Column(

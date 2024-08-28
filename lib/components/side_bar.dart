@@ -16,9 +16,6 @@ class SideBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            // decoration: BoxDecoration(
-            //   color: Colors.white,
-            // ),
             child: ClipOval(
               child: Image.asset(
                 "assets/images/logo.png",

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/constants.dart';
 import 'package:green_market_test/models/models.dart';
@@ -85,10 +86,10 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
           'isExpired': false,
         });
 
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
-          return const BottomBarScreen();
-        }));
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => BottomBarScreen()),
+          (Route<dynamic> route) => false,
+        );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -98,6 +99,81 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
         );
       }
     }
+  }
+
+  void showCropTypes() {
+    showModalBottomSheet<void>(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        builder: (BuildContext context) {
+          return DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                elevation: 0,
+                toolbarHeight: 20,
+                bottom: const TabBar(
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: kColor,
+                  labelColor: Colors.black,
+                  tabs: [
+                    Tab(
+                      text: 'Vegetables',
+                    ),
+                    Tab(text: 'Fruits'),
+                  ],
+                ),
+              ),
+              body: TabBarView(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10, top: 10),
+                    child: ListView.builder(
+                      itemCount: vegetables.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(
+                            vegetables[index],
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _cropType = vegetables[index];
+                            });
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10, top: 10),
+                    child: ListView.builder(
+                      itemCount: fruits.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(
+                            fruits[index],
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _cropType = fruits[index];
+                            });
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -208,9 +284,10 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            maxLength: 10,
                             decoration: InputDecoration(
                                 labelText: 'Phone Number',
-                                prefixText: '+94 ',
+                                counterText: '',
                                 suffixIcon: Icon(
                                   Icons.phone,
                                   size: size.height * 0.025,
@@ -228,7 +305,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                                 hintStyle: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.normal),
-                                hintText: 'XX XXX XXX'),
+                                hintText: 'XXX XXX XXX'),
                             style: TextStyle(fontWeight: FontWeight.w500),
                             // validator: (value) {
                             //   if (value == null || value.isEmpty) {
@@ -236,6 +313,11 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                             //   }
                             //   return null;
                             // },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter
+                                  .digitsOnly, // Only allow digits
+                            ],
                             onSaved: (value) {
                               _phoneNumber = value;
                             },
@@ -243,42 +325,31 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                         ),
                         SizedBox(width: size.width * 0.04),
                         Expanded(
-                          child: DropdownButtonFormField<String>(
-                            decoration: InputDecoration(
-                                labelText: 'Crop Type',
-                                labelStyle: TextStyle(
-                                  fontSize: size.height * 0.02,
-                                  color: kColor4,
+                          child: GestureDetector(
+                            onTap: showCropTypes,
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Crop Type',
+                                    labelStyle: TextStyle(
+                                      color: kColor4,
+                                      fontSize: size.height * 0.02,
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black)),
+                                    suffixIcon: Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      size: size.height * 0.025,
+                                      color: kColor4,
+                                    )),
+                                controller: TextEditingController(
+                                  text: _cropType == null
+                                      ? ''
+                                      : _cropType.toString(),
                                 ),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.black))),
-                            icon: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Icon(
-                                Icons.keyboard_arrow_down_outlined,
-                                size: size.height * 0.025,
-                                color: kColor4,
                               ),
                             ),
-                            items: cropTypes.map((String crop) {
-                              return DropdownMenuItem<String>(
-                                value: crop,
-                                child: Text('$crop',
-                                    style: TextStyle(fontSize: 16)),
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _cropType = value;
-                              });
-                            },
-                            // validator: (value) {
-                            //   if (value == null) {
-                            //     return 'Please select a crop type';
-                            //   }
-                            //   return null;
-                            // },
                           ),
                         ),
                       ],

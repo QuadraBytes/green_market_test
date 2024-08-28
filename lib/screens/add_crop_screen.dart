@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/constants.dart';
 import 'package:image_picker/image_picker.dart';
@@ -116,18 +117,17 @@ class _AddCropScreenState extends State<AddCropScreen> {
         return;
       }
 
+      if (_phoneNumber.toString().length != 10) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid phone number'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
       try {
-        // List imagesUrls = [];
-
-        // for (var image in _images) {
-        //   var imageName = DateTime.now().millisecondsSinceEpoch.toString();
-        //   var storageRef =
-        //       FirebaseStorage.instance.ref().child('$imageName.jpg');
-        //   var uploadTask = storageRef.putFile(image!);
-        //   var downloadUrl = await (await uploadTask).ref.getDownloadURL();
-        //   imagesUrls.add(downloadUrl);
-        // }
-
         var imageName = DateTime.now().millisecondsSinceEpoch.toString();
         var storageRef = FirebaseStorage.instance.ref().child('$imageName.jpg');
         var uploadTask = storageRef.putFile(_image!);
@@ -153,17 +153,91 @@ class _AddCropScreenState extends State<AddCropScreen> {
           'isExpired': false,
           'images': downloadUrl,
         });
-
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
-          return const BottomBarScreen();
-        }));
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => BottomBarScreen()),
+          (Route<dynamic> route) => false,
+        );
       } catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Failed to add crop: $error'),
             backgroundColor: Colors.red));
       }
     }
+  }
+
+  void showCropTypes() {
+    showModalBottomSheet<void>(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        builder: (BuildContext context) {
+          return DefaultTabController(
+            length: 2,
+            child: Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                elevation: 0,
+                toolbarHeight: 20,
+                bottom: const TabBar(
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorColor: kColor,
+                  labelColor: Colors.black,
+                  tabs: [
+                    Tab(
+                      text: 'Vegetables',
+                    ),
+                    Tab(text: 'Fruits'),
+                  ],
+                ),
+              ),
+              body: TabBarView(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10, top: 10),
+                    child: ListView.builder(
+                      itemCount: vegetables.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(
+                            vegetables[index],
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _cropType = vegetables[index];
+                            });
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10, top: 10),
+                    child: ListView.builder(
+                      itemCount: fruits.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          title: Text(
+                            fruits[index],
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _cropType = fruits[index];
+                            });
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -234,7 +308,6 @@ class _AddCropScreenState extends State<AddCropScreen> {
                               borderSide: BorderSide(color: Colors.black)),
                           labelText: 'Address',
                           hintText: 'Eg: No, Street, City',
-                          
                           hintStyle: TextStyle(
                               color: const Color.fromRGBO(158, 158, 158, 1),
                               fontWeight: FontWeight.normal),
@@ -252,6 +325,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            maxLength: 10,
                             decoration: InputDecoration(
                                 labelText: 'Phone Number',
                                 suffixIcon: Icon(
@@ -263,214 +337,55 @@ class _AddCropScreenState extends State<AddCropScreen> {
                                   color: kColor4,
                                   fontSize: size.height * 0.02,
                                 ),
+                                counterText: '',
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
                                         BorderSide(color: Colors.black)),
-                                prefixText: '+94 ',
                                 prefixStyle:
                                     TextStyle(fontWeight: FontWeight.w500),
                                 hintStyle: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.normal),
-                                hintText: 'XX XXX XXX'),
+                                hintText: 'XXX XXX XXX'),
                             style: TextStyle(fontWeight: FontWeight.w500),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             onSaved: (value) {
                               _phoneNumber = value;
                             },
                           ),
                         ),
                         SizedBox(width: size.width * 0.04),
-                           
-//                            Expanded(
-//                            child: TextFormField(
-//                            controller: _cropTypeController,
-//                            readOnly: true, // Makes the field non-editable
-//                            decoration: InputDecoration(
-//                            labelText: 'Crop Type',
-//                            labelStyle: TextStyle(
-//                            fontSize: size.height * 0.02,
-//                            color: kColor4,
-//                             ),
-//                           suffixIcon: Icon(
-//                           Icons.keyboard_arrow_down_outlined,
-//                          size: size.height * 0.025,
-//                         color: kColor4,
-//                         ),
-//                           ),
-//                    onTap: () {
-//                    showModalBottomSheet<void>(
-//                    context: context,
-//                    builder: (BuildContext context) {
-//                    return SizedBox(
-//                    height: MediaQuery.of(context).size.height * 0.5,
-//                    child: Column(
-//                    crossAxisAlignment: CrossAxisAlignment.center,
-//                    children: [
-//                    const Padding(
-//                   padding: const EdgeInsets.all(16.0),
-//                   child: Text(
-//                     'Vegetables',
-//                     //textAlign:TextAlign.center ,
-//                     style: TextStyle(
-//                       fontSize: 18,
-//                       fontWeight: FontWeight.bold,
-//                       color: kColor4,
-//                     ),
-//                   ),
-//                 ),
-//                 Expanded(
-//                   child: ListView.builder(
-//                     itemCount: vegetables.length + fruits.length,
-//                     itemBuilder: (BuildContext context, int index) {
-//                       return ListTile(
-//                         title: Text(
-//                           vegetables[index],
-//                           style: TextStyle(fontSize: 16),
-//                         ),
-//                         onTap: () {
-//                           setState(() {
-//                             _cropTypeController.text = cropTypes[index];
-//                           });
-//                           Navigator.pop(context);
-//                         },
-//                       );
-//                     },
-//                   ),
-//                 ),
-                 
-//               ],
-//             ),
-//           );
-//         },
-//       );
-//     },
-//   ),
-// )
-
-                                               Expanded(
-                      child: TextFormField(
-                        controller: _cropTypeController,
-                        readOnly: true, // Makes the field non-editable
-                        decoration: InputDecoration(
-                          labelText: 'Crop Type',
-                          labelStyle: TextStyle(
-                            fontSize: size.height * 0.02,
-                            color: Colors.grey, // Replace with your color
-                          ),
-                          suffixIcon: Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            size: size.height * 0.025,
-                            color: Colors.grey, // Replace with your color
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: showCropTypes,
+                            child: AbsorbPointer(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Crop Type',
+                                    labelStyle: TextStyle(
+                                      color: kColor4,
+                                      fontSize: size.height * 0.02,
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black)),
+                                    suffixIcon: Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      size: size.height * 0.025,
+                                      color: kColor4,
+                                    )),
+                                controller: TextEditingController(
+                                  text: _cropType == null
+                                      ? ''
+                                      : _cropType.toString(),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        onTap: () {
-                          showModalBottomSheet<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return DefaultTabController(
-                                length: 2,
-                                child: Scaffold(
-                                  appBar: AppBar(
-                                    backgroundColor: Colors.white,
-                                    elevation: 0,
-                                    bottom: const TabBar(
-                                      tabs: [
-                                        Tab(text: 'Vegetables'),
-                                        Tab(text: 'Fruits'),
-                                      ],
-                                    ),
-                                  ),
-                                  body: TabBarView(
-                                    children: [
-                                      Container(
-                                        color: Colors.white, // Background color for Vegetables
-                                        child: ListView.builder(
-                                          itemCount: vegetables.length,
-                                          itemBuilder: (BuildContext context, int index) {
-                                            return ListTile(
-                                              title: Text(
-                                                vegetables[index],
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              onTap: () {
-                                                setState(() {
-                                                  _cropTypeController.text = vegetables[index];
-                                               //   _cropTypeController.text = _cropType; // Update the TextFormField
-
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      Container(
-                                        color: Colors.white, // Background color for Fruits
-                                        child: ListView.builder(
-                                          itemCount: fruits.length,
-                                          itemBuilder: (BuildContext context, int index) {
-                                            return ListTile(
-                                              title: Text(
-                                                fruits[index],
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              onTap: () {
-                                                setState(() {
-                                                  _cropTypeController.text = fruits[index];
-                                                //  _cropTypeController.text = _cropType; // Update the TextFormField
-
-                                                });
-                                                Navigator.pop(context);
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    )
-
-
-
-                        // Expanded(
-                        //   child: DropdownButtonFormField<String>(
-                        //     decoration: InputDecoration(
-                        //         labelText: 'Crop Type',
-                        //         labelStyle: TextStyle(
-                        //           fontSize: size.height * 0.02,
-                        //           color: kColor4,
-                        //         ),
-                        //         focusedBorder: UnderlineInputBorder(
-                        //             borderSide:
-                        //                 BorderSide(color: Colors.black))),
-                        //     icon: Padding(
-                        //       padding: const EdgeInsets.only(right: 8.0),
-                        //       child: Icon(
-                        //         Icons.keyboard_arrow_down_outlined,
-                        //         size: size.height * 0.025,
-                        //         color: kColor4,
-                        //       ),
-                        //     ),
-                        //     items: cropTypes.map((String crop) {
-                        //       return DropdownMenuItem<String>(
-                        //         value: crop,
-                        //         child: Text('$crop',
-                        //             style: TextStyle(fontSize: 16)),
-                        //       );
-                        //     }).toList(),
-                        //     onChanged: (value) {
-                        //       setState(() {
-                        //         _cropType = value;
-                        //       });
-                        //     },
-                        //   ),
-                       // ), 
                       ],
                     ),
                     SizedBox(height: size.height * 0.02),
@@ -628,6 +543,10 @@ class _AddCropScreenState extends State<AddCropScreen> {
                                     borderSide:
                                         BorderSide(color: Colors.black))),
                             style: TextStyle(fontWeight: FontWeight.w500),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             onSaved: (value) {
                               _price = value;
                             },

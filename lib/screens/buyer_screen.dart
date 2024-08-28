@@ -8,6 +8,7 @@ import 'package:green_market_test/screens/add_requirement_screen.dart';
 import 'package:green_market_test/screens/favourites_screen.dart';
 import 'package:green_market_test/screens/profile_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 late User? loggedInUser;
@@ -36,6 +37,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
   late List filterList = [];
   late List unionRequireList = [];
   List<String> requireFavourites = [];
+
+  var isListening = false;
+  SpeechToText speech = SpeechToText();
 
   final _auth = FirebaseAuth.instance;
 
@@ -504,6 +508,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
     }
   }
 
+  Color iColor = Colors.black;
+  IconData iIcon = Icons.mic_off_rounded;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -596,10 +603,47 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                     Icons.search,
                                     color: Colors.black,
                                   ),
-                                  suffixIcon: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.mic_outlined,
+                                  suffixIcon: GestureDetector(
+                                    onTap: () async {
+                                      if (!isListening) {
+                                        bool available =
+                                            await speech.initialize(
+                                          onStatus: (status) {
+                                            print('status: $status');
+                                          },
+                                          onError: (errorNotification) {
+                                            print('error: $errorNotification');
+                                          },
+                                        );
+                                        if (available) {
+                                          setState(() {
+                                            isListening = true;
+                                            iColor = kColor;
+                                            iIcon = Icons.mic_rounded;
+                                          });
+
+                                          speech.listen(
+                                            onResult: (result) {
+                                              setState(() {
+                                                searchText.text =
+                                                    result.recognizedWords;
+                                                searchFilter();
+                                              });
+                                            },
+                                          );
+                                        }
+                                      } else {
+                                        setState(() {
+                                          isListening = false;
+                                          iColor = Colors.black;
+                                          iIcon = Icons.mic_off_rounded;
+                                        });
+                                        speech.stop();
+                                      }
+                                    },
+                                    child: Icon(
+                                      iIcon,
+                                      color: iColor,
                                     ),
                                   ),
                                   hintText: 'Search Crop',
@@ -745,7 +789,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                 searchFocusNode.unfocus();
                               },
                               child: Container(
-                                margin: EdgeInsets.only(top: 10),
+                                margin: index == (unionRequireList.length - 1)
+                                    ? EdgeInsets.only(top: 10, bottom: 30)
+                                    : EdgeInsets.only(top: 10),
                                 child: Card(
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
@@ -936,36 +982,31 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                         //   width: 10,
                                                         // ),
 
-                                                        isRequireFavourite
-                                                            ? Container()
-                                                            : ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                                child:
-                                                                    Container(
-                                                                  padding:
-                                                                      EdgeInsets
-                                                                          .zero,
-                                                                  color: kColor,
-                                                                  child:
-                                                                      IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      addFavourites(
-                                                                          data.id);
-                                                                    },
-                                                                    icon: Icon(
-                                                                      size: 17,
-                                                                      Icons
-                                                                          .favorite,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  ),
-                                                                ),
+                                                        ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          child: Container(
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            color: kColor,
+                                                            child: IconButton(
+                                                              onPressed: () {
+                                                                addFavourites(
+                                                                    data.id);
+                                                              },
+                                                              icon: Icon(
+                                                                size: 17,
+                                                                Icons.favorite,
+                                                                color: isRequireFavourite
+                                                                    ? Colors
+                                                                        .black
+                                                                    : Colors
+                                                                        .white,
                                                               ),
+                                                            ),
+                                                          ),
+                                                        ),
                                                         SizedBox(
                                                           width: 10,
                                                         ),
@@ -979,8 +1020,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                             color: kColor,
                                                             child: IconButton(
                                                               onPressed: () {
-                                                                _makePhoneCall(data[
-                                                                    'phoneNumber']);
+                                                                _makePhoneCall(
+                                                                    data[
+                                                                        'phoneNumber']);
                                                               },
                                                               icon: Icon(
                                                                 size: 17,

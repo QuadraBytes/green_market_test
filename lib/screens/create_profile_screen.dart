@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/constants.dart';
@@ -53,7 +54,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         return;
       }
 
-      if (phoneNumberController.text.length != 9) {
+      if (phoneNumberController.text.length != 10) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Invalid phone number'),
@@ -98,7 +99,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -131,7 +131,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                           decoration: InputDecoration(
                             labelText: "Display Name",
                             hintText: "Enter your dispaly name",
-                             hintStyle: TextStyle(
+                            hintStyle: TextStyle(
                               color: kColor4,
                             ),
                             labelStyle: TextStyle(
@@ -152,7 +152,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                           decoration: InputDecoration(
                             labelText: "About",
                             hintText: "Enter your about",
-                             hintStyle: TextStyle(
+                            hintStyle: TextStyle(
                               color: kColor4,
                             ),
                             labelStyle: TextStyle(
@@ -173,7 +173,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                           decoration: InputDecoration(
                             labelText: "District",
                             hintText: "Select your district",
-                             hintStyle: TextStyle(
+                            hintStyle: TextStyle(
                               color: kColor4,
                             ),
                             labelStyle: TextStyle(
@@ -212,11 +212,11 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                         TextField(
                           enableSuggestions: false,
                           controller: phoneNumberController,
-                          maxLength: 9,
+                          maxLength: 10,
                           decoration: InputDecoration(
                             labelText: "Phone Number",
-                            hintText: "+94 7X XXX XXXX",
-                             hintStyle: TextStyle(
+                            hintText: "XXX XXX XXXX",
+                            hintStyle: TextStyle(
                               color: kColor4,
                             ),
                             labelStyle: TextStyle(
@@ -230,6 +230,10 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
                         ),
                         SizedBox(height: 20),
                         showLoading

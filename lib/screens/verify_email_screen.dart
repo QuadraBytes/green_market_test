@@ -89,20 +89,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           backgroundColor: Colors.green,
           content: Center(child: Text("Your email is verified successfully"))));
 
-      await _auth.createUserWithEmailAndPassword(
-        email: widget.email,
-        password: widget.password,
-      );
-      _auth
-          .signInWithEmailAndPassword(
-              email: widget.email, password: widget.password)
-          .then((signedUser) => {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateProfileScreen(),
-                    ))
-              });
+   
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.red,

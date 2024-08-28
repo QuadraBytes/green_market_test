@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/components/constants.dart';
 import 'package:green_market_test/models/models.dart';
@@ -54,7 +55,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     });
   }
 
-  void editProfile() async {
+    void editProfile() async {
     try {
       if (displayNameController.text.isEmpty ||
           phoneNumberController.text.isEmpty ||
@@ -117,9 +118,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         'buyerName': displayNameController.text,
       });
     }
-
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => BottomBarScreen()));
+Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => BottomBarScreen()),
+      (Route<dynamic> route) => false,
+    );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -129,7 +131,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       );
     }
   }
-
   @override
   void initState() {
     getUserData();
@@ -254,6 +255,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   enableSuggestions: false,
                                   controller: phoneNumberController,
                                   maxLength: 9,
+                                  keyboardType:
+                                      TextInputType.number, // Numeric keyboard
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter
+                                        .digitsOnly, // Only allow digits
+                                  ],
                                   decoration: InputDecoration(
                                     labelText: "Phone Number",
                                     hintText: "+94 7X XXX XXXX",
