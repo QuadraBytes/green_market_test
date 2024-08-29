@@ -37,10 +37,6 @@ class GreenMarket extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Green Market',
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: kColor),
-      //   useMaterial3: true,
-      // ),
       home: SplashScreen(),
     );
   }

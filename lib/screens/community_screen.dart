@@ -18,14 +18,26 @@ class CommunityScreen extends StatelessWidget {
   //   }
   // }
 
-  void openWhatsApp() async {
+//   void openWhatsApp() async {
+//   final Uri whatsappUrl = Uri.parse("https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW");
+//   if (await canLaunch(whatsappUrl.toString())) {
+//     await launch(whatsappUrl.toString());
+//   } else {
+//     print("Could not open WhatsApp");
+//   }
+// }
+
+void openWhatsApp() async {
   final Uri whatsappUrl = Uri.parse("https://chat.whatsapp.com/I87TEfWtsQmGTqcBmlS1iW");
-  if (await canLaunch(whatsappUrl.toString())) {
+  try {
     await launch(whatsappUrl.toString());
-  } else {
-    print("Could not open WhatsApp");
+  } catch (e) {
+    print("Error opening WhatsApp: $e");
   }
 }
+
+
+
 
   @override
   Widget build(BuildContext context) {

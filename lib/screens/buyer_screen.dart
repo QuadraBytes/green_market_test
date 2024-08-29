@@ -501,10 +501,10 @@ class _BuyerScreenState extends State<BuyerScreen> {
       scheme: 'tel',
       path: phoneNumber,
     );
-    if (await canLaunchUrl(launchUri)) {
-      await launchUrl(launchUri);
-    } else {
-      throw 'Could not launch $phoneNumber';
+    try {
+      await launch(launchUri.toString());
+    } catch(e) {
+      print('Could not launch $phoneNumber');
     }
   }
 

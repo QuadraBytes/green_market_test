@@ -166,13 +166,12 @@ class _FarmerScreenState extends State<FarmerScreen> {
       scheme: 'tel',
       path: phoneNumber,
     );
-    if (await canLaunchUrl(launchUri)) {
-      await launchUrl(launchUri);
-    } else {
-      throw 'Could not launch $phoneNumber';
+    try {
+      await launch(launchUri.toString());
+    } catch(e) {
+      print('Could not launch $phoneNumber');
     }
   }
-
   updateUnionList() {
     setState(() {
       if (searchText.text.isEmpty &&
