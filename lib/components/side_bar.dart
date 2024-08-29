@@ -28,16 +28,19 @@ class SideBar extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: const Text('Home'),
             onTap: () {
+              Navigator.pop(context);
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const BottomBarScreen()), (route) => true);
+                      builder: (context) => const BottomBarScreen()),
+                  (route) => false);
             },
           ),
           ListTile(
             leading: const Icon(Icons.language),
             title: const Text('Social Media'),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const SocialMedia()));
             },
@@ -46,6 +49,7 @@ class SideBar extends StatelessWidget {
             leading: const Icon(Icons.info),
             title: const Text('How It Works'),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const HowItWorks()));
             },
@@ -54,6 +58,7 @@ class SideBar extends StatelessWidget {
             leading: const Icon(Icons.local_shipping_sharp),
             title: const Text('Available Supply'),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -65,5 +70,3 @@ class SideBar extends StatelessWidget {
     );
   }
 }
-
-
