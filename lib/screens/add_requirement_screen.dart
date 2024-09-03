@@ -305,7 +305,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                                 hintStyle: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.normal),
-                                hintText: 'XXX XXX XXX'),
+                                hintText: 'XXX XXX XXXX'),
                             style: TextStyle(fontWeight: FontWeight.w500),
                             // validator: (value) {
                             //   if (value == null || value.isEmpty) {

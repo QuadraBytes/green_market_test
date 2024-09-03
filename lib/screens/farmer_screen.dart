@@ -44,7 +44,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
   SpeechToText speech = SpeechToText();
 
   final _auth = FirebaseAuth.instance;
-  bool showLoading = false;
+  bool showLoading = true;
 
   void getCurrentUser() async {
     final user = await _auth.currentUser;
@@ -82,6 +82,9 @@ class _FarmerScreenState extends State<FarmerScreen> {
           showSearchBar = false;
         });
       }
+    });
+    setState(() {
+      showLoading = false;
     });
   }
 
@@ -168,10 +171,11 @@ class _FarmerScreenState extends State<FarmerScreen> {
     );
     try {
       await launch(launchUri.toString());
-    } catch(e) {
+    } catch (e) {
       print('Could not launch $phoneNumber');
     }
   }
+
   updateUnionList() {
     setState(() {
       if (searchText.text.isEmpty &&
@@ -1177,7 +1181,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
           onTap: () {
             searchFocusNode.unfocus();
           },
-          child: cropList.isEmpty
+          child: showLoading==true
               ? Center(
                   child: CircularProgressIndicator(
                   color: kColor,

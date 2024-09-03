@@ -42,6 +42,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
   SpeechToText speech = SpeechToText();
 
   final _auth = FirebaseAuth.instance;
+  bool showLoading = true;
 
   void getCurrentUser() async {
     final user = await _auth.currentUser;
@@ -80,6 +81,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
           showSearchBar = false;
         });
       }
+    });
+     setState(() {
+      showLoading = false;
     });
   }
 
@@ -759,7 +763,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
           onTap: () {
             searchFocusNode.unfocus();
           },
-          child: requireList.isEmpty
+          child: showLoading==true
               ? Center(
                   child: CircularProgressIndicator(
                     color: kColor,

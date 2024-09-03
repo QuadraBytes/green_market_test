@@ -339,7 +339,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                                 hintStyle: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.normal),
-                                hintText: 'XXX XXX XXX'),
+                                hintText: 'XXX XXX XXXX'),
                             style: TextStyle(fontWeight: FontWeight.w500),
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
