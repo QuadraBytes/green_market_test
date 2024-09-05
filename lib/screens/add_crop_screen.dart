@@ -35,6 +35,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
   final _auth = FirebaseAuth.instance;
 
   final ImagePicker _picker = ImagePicker();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -122,7 +123,33 @@ class _AddCropScreenState extends State<AddCropScreen> {
         return;
       }
 
+      if (_availableDate!.isAfter(_expiringDate!)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Expiring date should be after available date'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      if (_availableDate!.isBefore(DateTime.now())) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Available date should be today or future'),
+            backgroundColor: Colors.red));
+        return;
+      }
+
+      if (_expiringDate!.isBefore(DateTime.now())) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Expiring date should be today or future'),
+            backgroundColor: Colors.red));
+        return;
+      }
+
       try {
+        isLoading = true;
+
         var imageName = DateTime.now().millisecondsSinceEpoch.toString();
         var storageRef = FirebaseStorage.instance.ref().child('$imageName.jpg');
         var uploadTask = storageRef.putFile(_image!);
@@ -159,6 +186,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
   }
 
   void showCropTypes() {
+    final size = MediaQuery.of(context).size;
     showModalBottomSheet<void>(
         context: context,
         shape: RoundedRectangleBorder(
@@ -181,6 +209,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                       text: 'Vegetables',
                     ),
                     Tab(text: 'Fruits'),
+                    Tab(text: 'Others'),
                   ],
                 ),
               ),
@@ -225,6 +254,44 @@ class _AddCropScreenState extends State<AddCropScreen> {
                         );
                       },
                     ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10, top: 10),
+                    child: Column(children: [
+                      TextFormField(
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                      decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black)),
+                          hintText: 'Add Crop Name',
+                          hintStyle: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.normal),),
+                         
+                      // validator: (value) {
+                      //   if (value == null || value.isEmpty) {
+                      //     return 'Please enter address';
+                      //   }
+                      //   return null;
+                      // },
+                      onSaved: (value) {
+                        _cropType = value;
+                      },
+                    ),
+                    SizedBox(height: size.height * 0.02),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Ok',
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Color.fromARGB(255, 168, 165, 165)),
+                    ),
+                    ],)
                   ),
                 ],
               ),
@@ -559,6 +626,10 @@ class _AddCropScreenState extends State<AddCropScreen> {
                                     borderSide:
                                         BorderSide(color: Colors.black))),
                             style: TextStyle(fontWeight: FontWeight.w500),
+                             keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             onSaved: (value) {
                               _cultivatedArea = value;
                             },
@@ -640,7 +711,8 @@ class _AddCropScreenState extends State<AddCropScreen> {
                         SizedBox(
                           height: size.height * 0.02,
                         ),
-                        ElevatedButton(
+                        isLoading==true ? CircularProgressIndicator(color: kColor,)
+                        : ElevatedButton(
                           onPressed: _submitForm,
                           child: Text(
                             'Post',

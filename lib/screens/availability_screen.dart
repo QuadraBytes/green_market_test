@@ -54,7 +54,11 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
               right: 0,
               child: StreamBuilder<QuerySnapshot>(
                 stream:
-                    FirebaseFirestore.instance.collection('crops').snapshots(),
+                    FirebaseFirestore.instance.collection('crops')
+                            .where('isAccepted', isEqualTo: false)
+                            .where('isDeleted', isEqualTo: false)
+                            .where('isExpired', isEqualTo: false)
+                            .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
