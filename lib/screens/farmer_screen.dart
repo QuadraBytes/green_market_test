@@ -44,7 +44,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
   SpeechToText speech = SpeechToText();
 
   final _auth = FirebaseAuth.instance;
-  bool showLoading = false;
+  bool showLoading = true;
 
   void getCurrentUser() async {
     final user = await _auth.currentUser;
@@ -83,6 +83,9 @@ class _FarmerScreenState extends State<FarmerScreen> {
         });
       }
     });
+    // setState(() {
+    //   showLoading = false;
+    // });
   }
 
   @override
@@ -120,6 +123,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
     setState(() {
       cropList = list.docs;
       unionCropList = cropList;
+      showLoading = false;
     });
   }
 
@@ -166,10 +170,10 @@ class _FarmerScreenState extends State<FarmerScreen> {
       scheme: 'tel',
       path: phoneNumber,
     );
-    if (await canLaunchUrl(launchUri)) {
-      await launchUrl(launchUri);
-    } else {
-      throw 'Could not launch $phoneNumber';
+    try {
+      await launch(launchUri.toString());
+    } catch (e) {
+      print('Could not launch $phoneNumber');
     }
   }
 
@@ -1178,7 +1182,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
           onTap: () {
             searchFocusNode.unfocus();
           },
-          child: cropList.isEmpty
+          child: showLoading==true
               ? Center(
                   child: CircularProgressIndicator(
                   color: kColor,
@@ -1245,14 +1249,18 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                 SizedBox(
                                                   height: 10,
                                                 ),
-                                                Text(
-                                                  data['cropType'],
-                                                  style: TextStyle(
-                                                      color: Color(0xFF222325),
-                                                      fontSize:
-                                                          size.height * 0.0175,
-                                                      fontWeight:
-                                                          FontWeight.w700),
+                                                Container(
+                                                  width: size.width * 0.3,
+                                                  child: Text(
+                                                    data['cropType'],
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Color(0xFF222325),
+                                                        fontSize:
+                                                            size.height * 0.0175,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
                                                 ),
                                               ],
                                             ),

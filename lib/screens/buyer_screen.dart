@@ -42,6 +42,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
   SpeechToText speech = SpeechToText();
 
   final _auth = FirebaseAuth.instance;
+  bool showLoading = true;
 
   void getCurrentUser() async {
     final user = await _auth.currentUser;
@@ -81,6 +82,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
         });
       }
     });
+    // setState(() {
+    //   showLoading = false;
+    // });
   }
 
   @override
@@ -118,6 +122,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
     setState(() {
       requireList = list.docs;
       unionRequireList = requireList;
+      showLoading = false;
     });
   }
 
@@ -501,10 +506,10 @@ class _BuyerScreenState extends State<BuyerScreen> {
       scheme: 'tel',
       path: phoneNumber,
     );
-    if (await canLaunchUrl(launchUri)) {
-      await launchUrl(launchUri);
-    } else {
-      throw 'Could not launch $phoneNumber';
+    try {
+      await launch(launchUri.toString());
+    } catch (e) {
+      print('Could not launch $phoneNumber');
     }
   }
 
@@ -759,7 +764,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
           onTap: () {
             searchFocusNode.unfocus();
           },
-          child: requireList.isEmpty
+          child: showLoading == true
               ? Center(
                   child: CircularProgressIndicator(
                     color: kColor,
@@ -820,6 +825,8 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                       children: [
                                                         Text(
                                                           data['cropType'],
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                           style: TextStyle(
                                                               color: Color(
                                                                   0xFF222325),
@@ -1020,9 +1027,8 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                             color: kColor,
                                                             child: IconButton(
                                                               onPressed: () {
-                                                                _makePhoneCall(
-                                                                    data[
-                                                                        'phoneNumber']);
+                                                                _makePhoneCall(data[
+                                                                    'phoneNumber']);
                                                               },
                                                               icon: Icon(
                                                                 size: 17,

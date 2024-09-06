@@ -8,7 +8,6 @@ import 'package:green_market_test/components/bottom_bar.dart';
 import 'package:green_market_test/screens/reset_password_screen.dart';
 import 'package:green_market_test/screens/signin_screen.dart';
 import 'package:green_market_test/screens/splash_screen.dart';
-import 'package:green_market_test/screens/community_screen.dart';
 
 void main() async {
   EmailOTP.config(
@@ -35,14 +34,10 @@ class GreenMarket extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Green Market',
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(seedColor: kColor),
-      //   useMaterial3: true,
-      // ),
-      home: CommunityScreen(),
+      home: SplashScreen(),
     );
   }
 }

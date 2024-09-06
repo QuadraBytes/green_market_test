@@ -26,7 +26,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? about;
   String? phoneNumber;
   String? district;
-  // List<String> crops = ["vrevw", 'rvrev', 'ewqdew'];
   List crops = [];
   List requirements = [];
 
@@ -35,37 +34,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await prefs.setBool('isSignIn', isSignIn);
   }
 
-  Future<void> getUserData() async {
-    loggedInUser = _auth.currentUser!;
-    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(loggedInUser?.email)
-        .get();
+Future<void> getUserData() async {
+  loggedInUser = _auth.currentUser!;
+  DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(loggedInUser?.email)
+      .get();
 
-    var cropList = await FirebaseFirestore.instance.collection('crops').get();
-    var requirementList =
-        await FirebaseFirestore.instance.collection('requirements').get();
+  var cropList = await FirebaseFirestore.instance.collection('crops').get();
+  var requirementList =
+      await FirebaseFirestore.instance.collection('requirements').get();
 
-    for (var crop in cropList.docs) {
-      if (crop['userId'] == loggedInUser?.uid && crop['isDeleted'] == false) {
-        crops.add(crop);
-      }
+  crops.clear(); 
+  requirements.clear(); 
+
+  for (var crop in cropList.docs) {
+    if (crop['userId'] == loggedInUser?.uid &&
+        crop['isDeleted'] == false &&
+        crop['isExpired'] == false &&
+        crop['isAccepted'] == false) {
+      crops.add(crop);
     }
-
-    for (var requirement in requirementList.docs) {
-      if (requirement['userId'] == loggedInUser?.uid &&
-          requirement['isDeleted'] == false) {
-        requirements.add(requirement);
-      }
-    }
-
-    setState(() {
-      displayName = userSnapshot['displayName'].toString();
-      about = userSnapshot['about'].toString();
-      phoneNumber = userSnapshot['phoneNumber'].toString();
-      district = userSnapshot['district'].toString();
-    });
   }
+
+  for (var requirement in requirementList.docs) {
+    if (requirement['userId'] == loggedInUser?.uid &&
+        requirement['isDeleted'] == false &&
+        requirement['isExpired'] == false &&
+        requirement['isAccepted'] == false) {
+      requirements.add(requirement);
+    }
+  }
+
+  for (var crop in cropList.docs) {
+    if (crop['userId'] == loggedInUser?.uid &&
+        crop['isDeleted'] == false &&
+        crop['isExpired'] == true &&
+        crop['isAccepted'] == false) {
+      crops.add(crop);
+    }
+  }
+
+  for (var requirement in requirementList.docs) {
+    if (requirement['userId'] == loggedInUser?.uid &&
+        requirement['isDeleted'] == false &&
+        requirement['isExpired'] == true &&
+        requirement['isAccepted'] == false) {
+      requirements.add(requirement);
+    }
+  }
+
+  for (var crop in cropList.docs) {
+    if (crop['userId'] == loggedInUser?.uid &&
+        crop['isDeleted'] == false &&
+        crop['isExpired'] == false &&
+        crop['isAccepted'] == true) {
+      crops.add(crop);
+    }
+  }
+
+  for (var requirement in requirementList.docs) {
+    if (requirement['userId'] == loggedInUser?.uid &&
+        requirement['isDeleted'] == false &&
+        requirement['isExpired'] == false &&
+        requirement['isAccepted'] == true) {
+      requirements.add(requirement);
+    }
+  }
+
+  setState(() {
+    displayName = userSnapshot['displayName'].toString();
+    about = userSnapshot['about'].toString();
+    phoneNumber = userSnapshot['phoneNumber'].toString();
+    district = userSnapshot['district'].toString();
+  });
+}
 
   void logout() async {
     await _auth.signOut();

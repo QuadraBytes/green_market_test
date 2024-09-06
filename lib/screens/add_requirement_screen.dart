@@ -25,6 +25,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
   String? _weight;
   DateTime? _requiredDate;
   final _auth = FirebaseAuth.instance;
+  bool isLoading = false;
 
   final CollectionReference requirements =
       FirebaseFirestore.instance.collection('requirements');
@@ -71,7 +72,18 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
         return;
       }
 
+      if (_requiredDate!.isBefore(DateTime.now())) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Expiring date should be today or future'),
+            backgroundColor: Colors.red));
+        return;
+      }
+
       try {
+        setState(() {
+          isLoading = true;
+        });
+
         await requirements.add({
           'userId': loggedInUser!.uid,
           'buyerName': _buyerName,
@@ -102,6 +114,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
   }
 
   void showCropTypes() {
+    final size = MediaQuery.of(context).size;
     showModalBottomSheet<void>(
         context: context,
         shape: RoundedRectangleBorder(
@@ -109,7 +122,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
         ),
         builder: (BuildContext context) {
           return DefaultTabController(
-            length: 2,
+            length: 3,
             child: Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
@@ -124,6 +137,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                       text: 'Vegetables',
                     ),
                     Tab(text: 'Fruits'),
+                    Tab(text: 'Others'),
                   ],
                 ),
               ),
@@ -169,6 +183,54 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                       },
                     ),
                   ),
+                  Container(
+                      margin: EdgeInsets.only(left: 10, top: 10),
+                      child: Column(
+                        children: [
+                          // SizedBox(height: size.height * 0.05),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: TextFormField(
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                              decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.black)),
+                                hintText: 'Add Crop Name',
+                                hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.normal),
+                              ),
+
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return 'Please enter address';
+                              //   }
+                              //   return null;
+                              // },
+                              onChanged: (value) {
+                                setState(() {
+                                  _cropType = value;
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Ok',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 168, 165, 165)),
+                          ),
+                        ],
+                      )),
                 ],
               ),
             ),
@@ -305,7 +367,7 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                                 hintStyle: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.normal),
-                                hintText: 'XXX XXX XXX'),
+                                hintText: 'XXX XXX XXXX'),
                             style: TextStyle(fontWeight: FontWeight.w500),
                             // validator: (value) {
                             //   if (value == null || value.isEmpty) {
@@ -453,18 +515,23 @@ class _AddRequirementScreenState extends State<AddRequirementScreen> {
                         SizedBox(
                           height: size.height * 0.02,
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            _submitForm();
-                          },
-                          child: Text(
-                            'Post',
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: kColor,
-                          ),
-                        ),
+                        isLoading == true
+                            ? CircularProgressIndicator(
+                                color: kColor,
+                              )
+                            : ElevatedButton(
+                                onPressed: () {
+                                  _submitForm();
+                                },
+                                child: Text(
+                                  'Post',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: kColor,
+                                ),
+                              ),
                         SizedBox(
                           height: size.height * 0.02,
                         ),
