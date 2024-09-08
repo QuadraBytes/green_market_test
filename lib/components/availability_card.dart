@@ -36,7 +36,7 @@ class AvailabilityCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Crop : $cropName',
+                    ' $cropName',
                     style: TextStyle(
                         color: Color(0xFF222325),
                         fontSize: size.height * 0.0175,
@@ -45,7 +45,7 @@ class AvailabilityCard extends StatelessWidget {
                   Spacer(),
                   Container(
                     child: Text(
-                      'Total Weight : $totalWeight Kg',
+                      ' $totalWeight Kg',
                       style: TextStyle(
                         color: Color(0xFF222325),
                         fontSize: size.height * 0.0175,

@@ -83,9 +83,9 @@ class _FarmerScreenState extends State<FarmerScreen> {
         });
       }
     });
-    setState(() {
-      showLoading = false;
-    });
+    // setState(() {
+    //   showLoading = false;
+    // });
   }
 
   @override
@@ -123,6 +123,7 @@ class _FarmerScreenState extends State<FarmerScreen> {
     setState(() {
       cropList = list.docs;
       unionCropList = cropList;
+      showLoading = false;
     });
   }
 
@@ -1248,14 +1249,18 @@ class _FarmerScreenState extends State<FarmerScreen> {
                                                 SizedBox(
                                                   height: 10,
                                                 ),
-                                                Text(
-                                                  data['cropType'],
-                                                  style: TextStyle(
-                                                      color: Color(0xFF222325),
-                                                      fontSize:
-                                                          size.height * 0.0175,
-                                                      fontWeight:
-                                                          FontWeight.w700),
+                                                Container(
+                                                  width: size.width * 0.3,
+                                                  child: Text(
+                                                    data['cropType'],
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                        color: Color(0xFF222325),
+                                                        fontSize:
+                                                            size.height * 0.0175,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
                                                 ),
                                               ],
                                             ),

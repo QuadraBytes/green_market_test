@@ -82,9 +82,9 @@ class _BuyerScreenState extends State<BuyerScreen> {
         });
       }
     });
-     setState(() {
-      showLoading = false;
-    });
+    // setState(() {
+    //   showLoading = false;
+    // });
   }
 
   @override
@@ -122,6 +122,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
     setState(() {
       requireList = list.docs;
       unionRequireList = requireList;
+      showLoading = false;
     });
   }
 
@@ -507,7 +508,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
     );
     try {
       await launch(launchUri.toString());
-    } catch(e) {
+    } catch (e) {
       print('Could not launch $phoneNumber');
     }
   }
@@ -763,7 +764,7 @@ class _BuyerScreenState extends State<BuyerScreen> {
           onTap: () {
             searchFocusNode.unfocus();
           },
-          child: showLoading==true
+          child: showLoading == true
               ? Center(
                   child: CircularProgressIndicator(
                     color: kColor,
@@ -824,6 +825,8 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                       children: [
                                                         Text(
                                                           data['cropType'],
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                           style: TextStyle(
                                                               color: Color(
                                                                   0xFF222325),
@@ -1024,9 +1027,8 @@ class _BuyerScreenState extends State<BuyerScreen> {
                                                             color: kColor,
                                                             child: IconButton(
                                                               onPressed: () {
-                                                                _makePhoneCall(
-                                                                    data[
-                                                                        'phoneNumber']);
+                                                                _makePhoneCall(data[
+                                                                    'phoneNumber']);
                                                               },
                                                               icon: Icon(
                                                                 size: 17,

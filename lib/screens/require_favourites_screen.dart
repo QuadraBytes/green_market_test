@@ -209,6 +209,7 @@ class _RequireFavouritesScreenState extends State<RequireFavouritesScreen> {
                                                         children: [
                                                           Text(
                                                             data['cropType'],
+                                                            overflow: TextOverflow.ellipsis,
                                                             style: TextStyle(
                                                                 color: Color(
                                                                     0xFF222325),

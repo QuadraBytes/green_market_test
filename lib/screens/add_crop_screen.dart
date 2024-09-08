@@ -148,7 +148,10 @@ class _AddCropScreenState extends State<AddCropScreen> {
       }
 
       try {
-        isLoading = true;
+        setState(() {
+          isLoading = true;
+        });
+        // isLoading = true;
 
         var imageName = DateTime.now().millisecondsSinceEpoch.toString();
         var storageRef = FirebaseStorage.instance.ref().child('$imageName.jpg');
@@ -194,7 +197,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
         ),
         builder: (BuildContext context) {
           return DefaultTabController(
-            length: 2,
+            length: 3,
             child: Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
@@ -256,43 +259,56 @@ class _AddCropScreenState extends State<AddCropScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 10, top: 10),
-                    child: Column(children: [
-                      TextFormField(
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                      decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black)),
-                          hintText: 'Add Crop Name',
-                          hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.normal),),
-                         
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return 'Please enter address';
-                      //   }
-                      //   return null;
-                      // },
-                      onSaved: (value) {
-                        _cropType = value;
-                      },
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Ok',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      margin: EdgeInsets.only(left: 10, top: 10),
+                      child: Column(
+                        children: [
+                          // SizedBox(height: size.height * 0.05),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: TextFormField(
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                              decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.black)),
+                                hintText: 'Add Crop Name',
+                                hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.normal),
+                              ),
+
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return 'Please enter address';
+                              //   }
+                              //   return null;
+                              // },
+                              onChanged: (value) {
+                                setState(() {
+                                  _cropType = value;
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Ok',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 168, 165, 165)),
+                          ),
+                        ],
                       ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Color.fromARGB(255, 168, 165, 165)),
-                    ),
-                    ],)
-                  ),
+                      ),
+                 
+
                 ],
               ),
             ),
@@ -626,7 +642,7 @@ class _AddCropScreenState extends State<AddCropScreen> {
                                     borderSide:
                                         BorderSide(color: Colors.black))),
                             style: TextStyle(fontWeight: FontWeight.w500),
-                             keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ],
@@ -711,17 +727,20 @@ class _AddCropScreenState extends State<AddCropScreen> {
                         SizedBox(
                           height: size.height * 0.02,
                         ),
-                        isLoading==true ? CircularProgressIndicator(color: kColor,)
-                        : ElevatedButton(
-                          onPressed: _submitForm,
-                          child: Text(
-                            'Post',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: kColor,
-                          ),
-                        ),
+                        isLoading == true
+                            ? CircularProgressIndicator(
+                                color: kColor,
+                              )
+                            : ElevatedButton(
+                                onPressed: _submitForm,
+                                child: Text(
+                                  'Post',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: kColor,
+                                ),
+                              ),
                         SizedBox(
                           height: 40,
                         )

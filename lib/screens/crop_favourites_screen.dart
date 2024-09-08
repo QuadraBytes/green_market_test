@@ -149,6 +149,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                         alignment: Alignment.topCenter,
                         child: Text(
                           data['cropType'],
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: size.height * 0.025,
                             fontWeight: FontWeight.bold,
@@ -468,6 +469,7 @@ class _CropFavouritesScreenState extends State<CropFavouritesScreen> {
                                                       ),
                                                       Text(
                                                         data['cropType'],
+                                                        overflow: TextOverflow.ellipsis,
                                                         style: TextStyle(
                                                             color: Color(
                                                                 0xFF222325),
